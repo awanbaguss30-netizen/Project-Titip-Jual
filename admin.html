@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CMS Admin — titipjualsecond</title>
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#FAF9F6] text-zinc-900 min-h-screen flex flex-col antialiased">
+
+  <!-- Top Admin Bar -->
+  <header class="bg-white border-b border-zinc-200 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand & Admin Indicator -->
+      <div class="flex items-center gap-3">
+        <a href="admin.html" class="flex items-center gap-2">
+          <span class="font-editorial text-2xl font-bold tracking-tight text-zinc-900 lowercase">
+            titipjualsecond
+          </span>
+          <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-zinc-900 text-white">
+            CMS Admin
+          </span>
+        </a>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-3">
+        <!-- Ke Toko Publik -->
+        <a href="index.html" target="_blank" class="text-xs font-medium text-zinc-700 hover:text-zinc-900 px-3.5 py-2 rounded-lg border border-zinc-200 hover:bg-zinc-50 transition flex items-center gap-1.5">
+          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          <span>Buka Toko Publik</span>
+        </a>
+
+        <!-- Tambah Barang CTA -->
+        <button onclick="openAddModal()" class="text-xs font-medium tracking-wide uppercase px-4 py-2 rounded-lg bg-zinc-900 text-white hover:bg-zinc-800 transition flex items-center gap-1.5 shadow-sm">
+          <i data-lucide="plus" class="w-4 h-4"></i>
+          <span>Posting Barang Baru</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Admin Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
+    
+    <!-- 1. Stats Summary Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="p-5 rounded-xl bg-white border border-zinc-200 shadow-2xs">
+        <div class="flex items-center justify-between text-zinc-400 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider">Total Barang</span>
+          <i data-lucide="package" class="w-4 h-4"></i>
+        </div>
+        <div id="statTotalItems" class="text-2xl font-bold text-zinc-900">0</div>
+        <p class="text-[11px] text-zinc-500 mt-1">Seluruh item di inventaris</p>
+      </div>
+
+      <div class="p-5 rounded-xl bg-white border border-zinc-200 shadow-2xs">
+        <div class="flex items-center justify-between text-emerald-600 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider">Siap Dijual (Ready)</span>
+          <i data-lucide="check-circle" class="w-4 h-4"></i>
+        </div>
+        <div id="statActiveItems" class="text-2xl font-bold text-emerald-700">0</div>
+        <p class="text-[11px] text-zinc-500 mt-1">Tampil di katalog toko</p>
+      </div>
+
+      <div class="p-5 rounded-xl bg-white border border-zinc-200 shadow-2xs">
+        <div class="flex items-center justify-between text-red-500 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider">Terjual (Sold Out)</span>
+          <i data-lucide="tag" class="w-4 h-4"></i>
+        </div>
+        <div id="statSoldItems" class="text-2xl font-bold text-red-600">0</div>
+        <p class="text-[11px] text-zinc-500 mt-1">Unit berhasil terjual</p>
+      </div>
+
+      <div class="p-5 rounded-xl bg-white border border-zinc-200 shadow-2xs">
+        <div class="flex items-center justify-between text-zinc-500 mb-2">
+          <span class="text-xs font-semibold uppercase tracking-wider">Nilai Total Inventaris</span>
+          <i data-lucide="wallet" class="w-4 h-4"></i>
+        </div>
+        <div id="statTotalValue" class="text-xl font-bold text-zinc-900">Rp 0</div>
+        <p class="text-[11px] text-zinc-500 mt-1">Akumulasi harga jual barang ready</p>
+      </div>
+    </div>
+
+    <!-- 2. Management Table Header & Filters -->
+    <div class="bg-white rounded-2xl border border-zinc-200 shadow-2xs overflow-hidden">
+      
+      <!-- Table Controls Bar -->
+      <div class="p-5 border-b border-zinc-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-base font-semibold text-zinc-900">Daftar Inventaris Barang Second</h2>
+          <p class="text-xs text-zinc-500 mt-0.5">Kelola stok, ubah status terjual, edit transparansi, dan tambah barang baru.</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <!-- Search Input -->
+          <div class="relative w-full sm:w-60">
+            <i data-lucide="search" class="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <input 
+              type="text" 
+              id="adminSearchInput" 
+              placeholder="Cari ID, nama, brand..." 
+              class="w-full pl-9 pr-3 py-1.5 text-xs border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900"
+            >
+          </div>
+
+          <!-- Status Filter -->
+          <select id="adminStatusFilter" class="px-3 py-1.5 text-xs border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900 bg-white text-zinc-700">
+            <option value="all">Semua Status</option>
+            <option value="ready">Hanya Ready (Tersedia)</option>
+            <option value="sold">Hanya Terjual (Sold Out)</option>
+          </select>
+
+          <!-- Category Filter -->
+          <select id="adminCatFilter" class="px-3 py-1.5 text-xs border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900 bg-white text-zinc-700">
+            <option value="all">Semua Kategori</option>
+            <option value="gadgets">Kamera & Gadget</option>
+            <option value="clothing">Pakaian & Vintage</option>
+            <option value="footwear">Sepatu & Tas</option>
+            <option value="accessories">Jam & Aksesoris</option>
+            <option value="lifestyle">Dekor & Hobi</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Inventory Table -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs text-zinc-700 divide-y divide-zinc-200">
+          <thead class="bg-zinc-50 text-zinc-500 uppercase tracking-wider font-semibold text-[10px]">
+            <tr>
+              <th scope="col" class="px-5 py-3">Produk</th>
+              <th scope="col" class="px-4 py-3">Kategori</th>
+              <th scope="col" class="px-4 py-3">Harga Jual</th>
+              <th scope="col" class="px-4 py-3">Grade Kondisi</th>
+              <th scope="col" class="px-4 py-3">Status Stok</th>
+              <th scope="col" class="px-4 py-3 text-right">Aksi Manajemen</th>
+            </tr>
+          </thead>
+          <tbody id="adminTableBody" class="divide-y divide-zinc-100 bg-white">
+            <!-- Injected via JavaScript -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Table Empty State -->
+      <div id="adminEmptyState" class="hidden py-12 text-center">
+        <i data-lucide="package-search" class="w-10 h-10 mx-auto text-zinc-300 mb-2"></i>
+        <p class="text-sm font-medium text-zinc-700">Tidak ada barang yang cocok dengan pencarian.</p>
+        <p class="text-xs text-zinc-400 mt-1">Coba sesuaikan kata kunci atau filter status.</p>
+      </div>
+
+      <!-- Footer Actions -->
+      <div class="p-4 bg-zinc-50 border-t border-zinc-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-zinc-500">
+        <div>
+          Data disimpan secara lokal di browser Anda (<span class="font-medium text-zinc-700">Local Database Aktif</span>).
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="handleResetData()" class="hover:text-red-600 transition flex items-center gap-1">
+            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+            Reset ke Sampel Awal
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ==================== MODAL: POST / EDIT BARANG ==================== -->
+  <div id="productFormModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div class="fixed inset-0 modal-backdrop" onclick="closeFormModal()"></div>
+    
+    <div class="relative bg-white rounded-2xl max-w-3xl w-full p-6 sm:p-8 z-10 shadow-2xl max-h-[92vh] overflow-y-auto border border-zinc-200">
+      
+      <!-- Close Button -->
+      <button onclick="closeFormModal()" class="absolute top-5 right-5 p-2 rounded-full hover:bg-zinc-100 text-zinc-400 hover:text-zinc-800 transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <!-- Modal Header -->
+      <div class="mb-6">
+        <span id="formBadge" class="text-xs font-bold uppercase tracking-wider text-emerald-600">titipjualsecond CMS</span>
+        <h3 id="formTitle" class="text-xl font-bold text-zinc-900 mt-0.5">Posting Barang Second Baru</h3>
+        <p class="text-xs text-zinc-500 mt-1">Lengkapi informasi produk dan transparansi kondisi secara jujur untuk dipajang di katalog toko.</p>
+      </div>
+
+      <!-- Main Form -->
+      <form id="productForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
+        <input type="hidden" id="editProductId" value="">
+
+        <!-- Bagian 1: Informasi Utama -->
+        <div class="space-y-4">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-800 border-b border-zinc-200 pb-1.5 flex items-center gap-1.5">
+            <i data-lucide="info" class="w-4 h-4 text-zinc-500"></i>
+            1. Informasi Dasar Produk
+          </h4>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-medium text-zinc-700 mb-1">Nama Barang <span class="text-red-500">*</span></label>
+              <input type="text" id="inputName" required placeholder="Contoh: Olympus OM-1 35mm SLR Film Camera + 50mm" class="w-full px-3.5 py-2 text-xs border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900">
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-zinc-700 mb-1">Brand / Merek <span class="text-red-500">*</span></label>
+              <input type="text" id="inputBrand" required placeholder="Contoh: Olympus / Barbour / Sony" class="w-full px-3.5 py-2 text-xs border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900">
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-zinc-700 mb-1">Kategori <span class="text-red-500">*</span></label>
+              <select id="inputCategory" required class="w-full px-3 py-2 text-xs border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900 bg-white">
+                <option value="gadgets">Kamera & Gadget</option>
+                <option value="clothing">Pakaian & Vintage</option>
+                <option value="footwear">Sepatu & Tas</option>
+                <option value="accessories">Jam & Aksesoris</option>
+                <option value="lifestyle">Dekor & Hobi</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-zinc-700 mb-1">Harga Jual Second (Rp) <span class="text-red-500">*</span></label>
+              <input type="number" id="inputPrice" required placeholder="Contoh: 2450000" class="w-full px-3.5 py-2 text-xs border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900">
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-zinc-700 mb-1">Harga Asli Baru / Retail (Rp)</label>
+              <input type="number" id="inputOriginalPrice" placeholder="Contoh: 4200000 (untuk kalkulasi diskon)" class="w-full px-3.5 py-2 text-xs border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900">
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-zinc-700 mb-1">Ukuran / Dimensi / Varian</label>
+              <input type="text" id="inputSize" placeholder="Contoh: Size L / Diameter 42mm / EU 42" class="w-full px-3.5 py-2 text-xs border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900">
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-zinc-700 mb-1">Status Ketersediaan</label>
+              <select id="inputStatus" class="w-full px-3 py-2 text-xs border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900 bg-white">
+                <option value="true">Tersedia (Ready Stock)</option>
+                <option value="false">Sudah Terjual (Sold Out)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bagian 2: Grade Kondisi -->
+        <div class="space-y-4">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-800 border-b border-zinc-200 pb-1.5 flex items-center gap-1.5">
+            <i data-lucide="award" class="w-4 h-4 text-zinc-500"></i>
+            2. Penilaian Grade Kondisi
+          </h4>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-medium text-zinc-700 mb-1">Tingkat Grade</label>
+              <select id="inputGrade" class="w-full px-3 py-2 text-xs border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900 bg-white">
+                <option value="Grade S">Grade S — Like New / Mint (98-100%)</option>
+                <option value="Grade A" selected>Grade A — Sangat Mulus & Prima (90-97%)</option>
+                <option value="Grade B">Grade B — Authentic Vintage / Good (80-89%)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-zinc-700 mb-1">Skor Persentase</label>
+              <input type="text" id="inputGradeScore" placeholder="Contoh: 95%" class="w-full px-3.5 py-2 text-xs border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900">
+            </div>
+          </div>
+        </div>
+
+        <!-- Bagian 3: Foto Barang -->
+        <div class="space-y-4">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-800 border-b border-zinc-200 pb-1.5 flex items-center gap-1.5">
+            <i data-lucide="image" class="w-4 h-4 text-zinc-500"></i>
+            3. Foto Barang
+          </h4>
+
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-medium text-zinc-700 mb-1">URL Foto Gambar</label>
+              <input type="url" id="inputImageUrl" oninput="updateImagePreview(this.value)" placeholder="https://images.unsplash.com/photo-..." class="w-full px-3.5 py-2 text-xs border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900">
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-zinc-700 mb-1">Atau Upload Foto dari Komputer</label>
+              <input type="file" id="inputFileUpload" accept="image/*" onchange="handleFileUpload(event)" class="w-full text-xs text-zinc-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-medium file:bg-zinc-100 file:text-zinc-700 hover:file:bg-zinc-200 cursor-pointer">
+            </div>
+
+            <!-- Preview Box -->
+            <div class="flex items-center gap-4 pt-2">
+              <div class="w-24 h-24 rounded-lg bg-zinc-100 border border-zinc-200 overflow-hidden shrink-0">
+                <img id="imagePreview" src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?q=80&w=300&auto=format&fit=crop" class="w-full h-full object-cover">
+              </div>
+              <div class="text-[11px] text-zinc-400">
+                <p class="font-medium text-zinc-700">Preview Tampilan Foto</p>
+                <p>Foto akan tampil pada kartu katalog dan modal rincian barang.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bagian 4: Transparansi Kondisi (Kunci Barang Second) -->
+        <div class="space-y-4">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-800 border-b border-zinc-200 pb-1.5 flex items-center gap-1.5">
+            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
+            4. Laporan Transparansi Kondisi (Authentic Check)
+          </h4>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-medium text-zinc-700 mb-1">Kondisi Fisik Bodi</label>
+              <input type="text" id="inputPhysical" placeholder="Contoh: 9.5/10 - Bodi mulus, minim goresan mikro" class="w-full px-3.5 py-2 text-xs border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900">
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-zinc-700 mb-1">Kondisi Fungsi Teknis</label>
+              <input type="text" id="inputFunction" placeholder="Contoh: 100% - Mekanikal lancar tanpa kendala" class="w-full px-3.5 py-2 text-xs border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900">
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-zinc-700 mb-1">Kelengkapan Bawaan</label>
+              <input type="text" id="inputCompleteness" placeholder="Contoh: Unit, Box original, Manual book, Strap" class="w-full px-3.5 py-2 text-xs border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900">
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-zinc-700 mb-1">Catatan Minus / Defect <span class="text-amber-600 font-semibold">(Wajib Jujur)</span></label>
+              <input type="text" id="inputDefect" placeholder="Contoh: Goresan rambut di bagian bawah / Tidak ada minus" class="w-full px-3.5 py-2 text-xs border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900">
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-medium text-zinc-700 mb-1">Histori / Asal Barang</label>
+              <input type="text" id="inputOrigin" placeholder="Contoh: Titip jual koleksi pribadi fotografer / Beli di toko resmi" class="w-full px-3.5 py-2 text-xs border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900">
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-medium text-zinc-700 mb-1">Deskripsi Singkat</label>
+              <textarea id="inputDescription" rows="3" placeholder="Ceritakan keistimewaan barang, histori pemakaian, atau tips penggunaan..." class="w-full px-3.5 py-2 text-xs border border-zinc-200 rounded-lg focus:outline-none focus:border-zinc-900"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="pt-4 border-t border-zinc-200 flex items-center justify-end gap-3">
+          <button type="button" onclick="closeFormModal()" class="px-5 py-2.5 rounded-xl border border-zinc-200 text-xs font-medium text-zinc-700 hover:bg-zinc-50 transition">
+            Batal
+          </button>
+          <button type="submit" class="px-6 py-2.5 rounded-xl bg-zinc-900 text-white text-xs font-semibold hover:bg-zinc-800 transition flex items-center gap-1.5 shadow-sm">
+            <i data-lucide="check" class="w-4 h-4"></i>
+            <span id="submitBtnText">Simpan & Posting Barang</span>
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="adminToast" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 hidden">
+    <div class="bg-zinc-900/95 text-white text-xs py-3 px-5 rounded-full shadow-2xl flex items-center gap-2 border border-zinc-700 backdrop-blur-md">
+      <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+      <span id="adminToastMessage">Pemberitahuan</span>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="data/products.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/admin.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

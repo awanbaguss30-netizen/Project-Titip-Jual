@@ -1,0 +1,143 @@
+/* 
+ * KEDUA Archive & Studio - Minimalist Second-Hand Shop Styles
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&display=swap');
+
+:root {
+  --bg-primary: #FAF9F6;
+  --bg-surface: #FFFFFF;
+  --text-main: #18181B;
+  --text-muted: #71717A;
+  --accent-dark: #121214;
+  --border-soft: #E4E4E7;
+  --grade-s-bg: #ECFDF5;
+  --grade-s-text: #065F46;
+  --grade-a-bg: #F4F4F5;
+  --grade-a-text: #27272A;
+  --grade-b-bg: #FEF3C7;
+  --grade-b-text: #92400E;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-editorial {
+  font-family: 'Newsreader', serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Smooth Transitions */
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Glassmorphism Navigation */
+.nav-blur {
+  background: rgba(250, 249, 246, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Minimalist Card Hover */
+.product-card {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+}
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.06);
+}
+
+.product-image-container {
+  overflow: hidden;
+}
+.product-image-container img {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.product-card:hover .product-image-container img {
+  transform: scale(1.05);
+}
+
+/* Condition Grade Badges */
+.badge-grade-s {
+  background-color: var(--grade-s-bg);
+  color: var(--grade-s-text);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+.badge-grade-a {
+  background-color: var(--grade-a-bg);
+  color: var(--grade-a-text);
+  border: 1px solid rgba(113, 113, 122, 0.2);
+}
+.badge-grade-b {
+  background-color: var(--grade-b-bg);
+  color: var(--grade-b-text);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+/* Drawer / Modal animations */
+.drawer-enter {
+  transform: translateX(100%);
+}
+.drawer-enter-active {
+  transform: translateX(0);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.drawer-exit {
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-backdrop {
+  background: rgba(18, 18, 20, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+/* Toast Notification Animation */
+@keyframes slideDownFade {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -15px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.toast-animate {
+  animation: slideDownFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Custom Tag / Pill active state */
+.filter-pill.active {
+  background-color: #18181B;
+  color: #FFFFFF;
+  border-color: #18181B;
+}
+
+/* Eco stat count-up aesthetic */
+.eco-badge {
+  background: linear-gradient(135deg, #f4fbf7 0%, #e6f7ee 100%);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
