@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TITIPJUALSECOND — Belanja Barang Second Terkurasi & Authentic</title>
-  <meta name="description" content="Toko barang second terkurasi gaya fashion & lifestyle: sneakers, kamera analog, jaket vintage, jam tangan dengan transparansi kondisi 100%.">
+  <title>TitipLaku — Platform Titip Jual (Konsinyasi) Terpercaya</title>
+  <meta name="description" content="TitipLaku: Titipkan produk UMKM dan barang second pilihanmu, kami bantu jualkan dengan sistem konsinyasi terpercaya, transparan dan aman.">
   
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -14,371 +14,392 @@
   
   <!-- Custom CSS -->
   <link rel="stylesheet" href="css/style.css">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandGreen: '#14453D',
+            brandGreenDark: '#0D332D',
+            brandGreenLight: '#EBF5F3',
+            brandOrange: '#F36926',
+            brandOrangeHover: '#E05615'
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body class="bg-white text-zinc-900 min-h-screen flex flex-col antialiased selection:bg-black selection:text-white">
+<body class="bg-[#F8F9FA] text-zinc-900 min-h-screen flex flex-col antialiased pb-16 lg:pb-0">
 
-  <!-- 1. Top Ticker Bar (Zalora Style 3-Column Notice) -->
-  <div class="top-ticker py-2 px-4 border-b border-zinc-200">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between text-zinc-600 gap-2">
-      <div class="flex items-center gap-1.5 hover:text-black transition cursor-pointer">
-        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-zinc-500"></i>
-        <span>Garansi Pengembalian 48 Jam | Transparansi Fisik & S&K berlaku &rsaquo;</span>
-      </div>
-      <div class="flex items-center gap-1.5 hover:text-black transition cursor-pointer">
-        <span class="w-4 h-4 rounded-full bg-amber-400 text-black text-[9px] font-bold flex items-center justify-center">Z</span>
-        <span>Dapatkan poin di setiap pesanan dengan PRE-LOVED CLUB &rsaquo;</span>
-      </div>
-      <div class="hidden lg:flex items-center gap-1.5 hover:text-black transition cursor-pointer">
-        <i data-lucide="smartphone" class="w-3.5 h-3.5 text-zinc-500"></i>
-        <span>Download & Dapatkan Voucher 10% + Gratis Ongkir Seluruh Indonesia* &rsaquo;</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- 2. Main Navigation Bar (Zalora Exact Style) -->
-  <header class="sticky top-0 z-40 bg-white border-b border-zinc-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4">
+  <!-- ==================== 1. TOP GREEN NAVBAR (MATCHING MOCKUP) ==================== -->
+  <header class="bg-[#14453D] text-white sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3 flex items-center justify-between gap-4">
       
-      <!-- Logo: Zalora Style Bold Uppercase Spaced -->
-      <a href="index.html" class="shrink-0 flex items-center">
-        <span class="font-brand text-2xl sm:text-3xl font-extrabold tracking-[0.22em] text-black uppercase">
-          TITIPJUALSECOND
-        </span>
+      <!-- Brand Logo (TitipLaku with Cart Icon) -->
+      <a href="index.html" class="flex items-center gap-2.5 shrink-0 group">
+        <div class="w-9 h-9 rounded-full bg-white flex items-center justify-center text-[#14453D] shadow-xs group-hover:scale-105 transition">
+          <i data-lucide="shopping-cart" class="w-5 h-5 text-[#F36926]"></i>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-brand text-2xl font-extrabold tracking-tight text-white flex items-center">
+            Titip<span class="text-[#F36926]">Laku</span>
+          </span>
+          <span class="text-[9px] text-emerald-200 tracking-wider -mt-1 font-medium hidden sm:inline">Platform Titip Jual Resmi</span>
+        </div>
       </a>
 
-      <!-- Zalora Centered Search Bar Pill -->
-      <div class="flex-1 max-w-xl mx-2 sm:mx-6">
-        <div class="zalora-search-bar flex items-center bg-white px-4 py-1.5 shadow-2xs">
+      <!-- Center Pill Search Input -->
+      <div class="flex-1 max-w-xl mx-2 sm:mx-4">
+        <div class="relative flex items-center bg-white rounded-full px-4 py-2 shadow-inner">
+          <i data-lucide="search" class="w-4 h-4 text-zinc-400 shrink-0 mr-2"></i>
           <input 
             type="text" 
             id="searchInput" 
-            placeholder="Cari sneakers second, jaket vintage, kamera, brand..." 
+            placeholder="Cari barang atau UMKM..." 
             class="w-full text-xs text-zinc-800 placeholder-zinc-400 focus:outline-none bg-transparent"
           >
-          <button onclick="applyFilters()" class="w-7 h-7 rounded-full bg-black text-white flex items-center justify-center shrink-0 hover:bg-zinc-800 transition ml-2">
-            <i data-lucide="search" class="w-3.5 h-3.5"></i>
+          <button onclick="applyFilters()" class="text-[11px] font-bold text-[#14453D] hover:text-[#F36926] transition shrink-0 ml-2">
+            Cari
           </button>
         </div>
       </div>
 
-      <!-- Right User Actions -->
-      <div class="flex items-center gap-4 sm:gap-6 shrink-0">
-        <!-- User / Auth Gate (Secret Admin Access Portal) -->
-        <button onclick="openAuthModal()" class="flex items-center gap-1.5 text-xs font-semibold text-zinc-800 hover:text-black transition" title="Masuk / Akun">
+      <!-- Right Header Actions (Orange Button + User + Cart) -->
+      <div class="flex items-center gap-3 sm:gap-4 shrink-0">
+        
+        <!-- CTA: Titip Barang Sekarang (Orange Pill) -->
+        <button onclick="openConsignmentModal()" class="hidden md:inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#F36926] hover:bg-[#E05615] text-white text-xs font-bold transition shadow-sm">
+          <i data-lucide="plus-circle" class="w-4 h-4"></i>
+          <span>Titip Barang Sekarang</span>
+        </button>
+
+        <!-- User / Masuk/Daftar (Secret Admin Auth Gate) -->
+        <button onclick="openAuthModal()" class="hidden sm:flex items-center gap-1.5 text-xs font-medium text-emerald-100 hover:text-white transition" title="Masuk / Daftar Akun">
           <i data-lucide="user" class="w-4 h-4"></i>
-          <span class="hidden sm:inline">Masuk / Akun</span>
+          <span>Masuk/Daftar</span>
         </button>
 
-        <!-- Wishlist -->
-        <button onclick="showToast('Fitur Wishlist aktif! Simpan barang favoritmu.')" class="relative p-1 text-zinc-800 hover:text-black transition" title="Wishlist">
-          <i data-lucide="heart" class="w-5 h-5"></i>
-          <span id="wishlistCountBadge" class="hidden absolute -top-1 -right-1 w-4 h-4 bg-black text-white rounded-full text-[9px] font-bold flex items-center justify-center">0</span>
-        </button>
-
-        <!-- Cart Bag -->
-        <button onclick="openCartDrawer()" class="relative p-1 text-zinc-800 hover:text-black transition" title="Keranjang">
+        <!-- Cart Icon -->
+        <button onclick="openCartDrawer()" class="relative p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition" title="Kantong Belanja">
           <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-          <span id="cartCountBadge" class="hidden absolute -top-1 -right-1 w-4 h-4 bg-emerald-600 text-white rounded-full text-[9px] font-bold flex items-center justify-center">0</span>
+          <span id="cartCountBadge" class="hidden absolute -top-1 -right-1 w-4 h-4 bg-[#F36926] text-white rounded-full text-[9px] font-extrabold flex items-center justify-center">0</span>
         </button>
+
       </div>
 
     </div>
 
-    <!-- 3. Department Sub-nav (WANITA, PRIA, SPORTS, etc.) -->
-    <div class="border-t border-zinc-100 bg-white">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-8 overflow-x-auto scrollbar-none">
-        <button onclick="setDepartment('all')" class="dept-nav-link active" data-dept="all">SEMUA</button>
-        <button onclick="setDepartment('wanita')" class="dept-nav-link" data-dept="wanita">WANITA</button>
-        <button onclick="setDepartment('pria')" class="dept-nav-link" data-dept="pria">PRIA</button>
-        <button onclick="setDepartment('footwear')" class="dept-nav-link" data-dept="footwear">SNEAKERS & SEPATU</button>
-        <button onclick="setDepartment('clothing')" class="dept-nav-link" data-dept="clothing">VINTAGE & CLOTHING</button>
-        <button onclick="setDepartment('gadgets')" class="dept-nav-link" data-dept="gadgets">KAMERA & GADGET</button>
-        <button onclick="setDepartment('accessories')" class="dept-nav-link" data-dept="accessories">LUXURY & JAM</button>
+    <!-- Sub-Navbar (White/Light Green Row: Kategori, Cara Kerja, Tentang Kami) -->
+    <div class="bg-white text-zinc-700 border-b border-zinc-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between text-xs font-semibold">
+        <div class="flex items-center gap-6 overflow-x-auto scrollbar-none">
+          
+          <!-- Category Dropdown -->
+          <div class="relative group">
+            <button class="flex items-center gap-1 text-[#14453D] font-bold hover:text-[#F36926] transition py-1">
+              <i data-lucide="grid" class="w-3.5 h-3.5"></i>
+              <span>Kategori</span>
+              <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
+            </button>
+            <div class="absolute left-0 top-full pt-1 hidden group-hover:block z-30 w-52 bg-white rounded-xl shadow-xl border border-zinc-200 py-2 text-xs">
+              <button onclick="setCategoryFilter('all')" class="w-full text-left px-4 py-2 hover:bg-zinc-50 font-medium">Semua Kategori</button>
+              <button onclick="setCategoryFilter('kuliner')" class="w-full text-left px-4 py-2 hover:bg-zinc-50 font-medium">Kuliner & Camilan UMKM</button>
+              <button onclick="setCategoryFilter('kerajinan')" class="w-full text-left px-4 py-2 hover:bg-zinc-50 font-medium">Kerajinan Tangan Lokal</button>
+              <button onclick="setCategoryFilter('clothing')" class="w-full text-left px-4 py-2 hover:bg-zinc-50 font-medium">Pakaian & Vintage</button>
+              <button onclick="setCategoryFilter('footwear')" class="w-full text-left px-4 py-2 hover:bg-zinc-50 font-medium">Sepatu & Sneakers</button>
+              <button onclick="setCategoryFilter('gadgets')" class="w-full text-left px-4 py-2 hover:bg-zinc-50 font-medium">Kamera & Gadget</button>
+            </div>
+          </div>
+
+          <a href="#cara-kerja" class="hover:text-[#14453D] transition">Cara Kerja</a>
+          <a href="#tentang-kami" class="hover:text-[#14453D] transition">Tentang Kami</a>
+          <a href="#katalog" class="hover:text-[#14453D] transition">Produk Pilihan</a>
+          <button onclick="openConsignmentModal()" class="text-[#F36926] font-bold hover:underline md:hidden">Titip Barangmu</button>
+        </div>
+
+        <div class="hidden lg:flex items-center gap-2 text-zinc-500 text-[11px]">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>100% Produk Lolos Kurasi Transparansi</span>
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- 4. Zalora Editorial Category Banner -->
-  <div class="bg-zinc-100/70 border-b border-zinc-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-6">
-      <div class="max-w-md">
-        <span class="text-[10px] font-extrabold tracking-widest uppercase text-emerald-700 bg-emerald-100/80 px-2.5 py-0.5 rounded-full inline-block mb-2">
-          AUTHENTIC ARCHIVE • 100% TRANSPARAN
-        </span>
-        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-black uppercase font-brand">
-          Sneaker & Vintage
-        </h1>
-        <p class="text-xs text-zinc-500 mt-1.5 leading-relaxed">
-          Temukan koleksi sneakers original, jaket vintage langka, dan kamera analog pilihan dengan garansi keaslian dan kondisi teruji.
+  <!-- ==================== 2. HERO BANNER SECTION (MATCHING MOCKUP) ==================== -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-4 w-full">
+    <div class="hero-forest-bg text-white rounded-3xl p-6 sm:p-10 lg:p-12 shadow-xl relative overflow-hidden">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+        
+        <!-- Left Banner Content -->
+        <div class="lg:col-span-7 space-y-4 sm:space-y-5">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs text-xs font-semibold text-emerald-200">
+            <i data-lucide="badge-check" class="w-4 h-4 text-emerald-400"></i>
+            Konsinyasi Aman & Terverifikasi
+          </div>
+
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-[1.15] font-brand">
+            Titipkan Produk UMKM-mu,<br>
+            <span class="text-[#F36926]">Kami Bantu Jualkan!</span>
+          </h1>
+
+          <p class="text-xs sm:text-sm text-emerald-100 max-w-lg leading-relaxed font-light">
+            Platform titip jual (konsinyasi) terpercaya untuk memajukan usaha lokal dan menghubungkan produk berkualitas dengan ribuan pembeli setia.
+          </p>
+
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <!-- Button Mulai Titip (Orange Pill) -->
+            <button onclick="openConsignmentModal()" class="px-6 py-3 rounded-full bg-[#F36926] hover:bg-[#E05615] text-white text-xs font-bold uppercase tracking-wider transition shadow-md flex items-center gap-2">
+              <span>Mulai Titip</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+
+            <!-- Button Belanja Sekarang -->
+            <a href="#katalog" class="px-6 py-3 rounded-full border border-white/60 hover:bg-white hover:text-[#14453D] text-white text-xs font-bold uppercase tracking-wider transition">
+              Belanja Sekarang
+            </a>
+          </div>
+
+          <!-- Carousel Dots (as shown in laptop screen!) -->
+          <div class="flex items-center gap-1.5 pt-4">
+            <span class="w-6 h-1.5 rounded-full bg-[#F36926]"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+          </div>
+        </div>
+
+        <!-- Right Banner Photo: PEOPLE DISCUSSING (SESUAI REQUEST USER) -->
+        <div class="lg:col-span-5 relative">
+          <div class="relative mx-auto max-w-md lg:max-w-none">
+            
+            <!-- Foto Orang Sedang Berdiskusi & Kolaborasi -->
+            <div class="rounded-2xl overflow-hidden shadow-2xl border-2 border-white/20 aspect-[4/3] bg-zinc-900 group">
+              <img 
+                src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1200&auto=format&fit=crop" 
+                alt="Tim UMKM & Mitra Sedang Berdiskusi Kolaborasi" 
+                class="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+              >
+            </div>
+
+            <!-- Floating Badge: Diskusi & Konsultasi Konsinyasi -->
+            <div class="absolute -bottom-4 -left-4 bg-white text-zinc-900 p-3 sm:p-3.5 rounded-xl shadow-lg border border-zinc-200 flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-[#EBF5F3] flex items-center justify-center text-[#14453D] shrink-0 font-bold">
+                <i data-lucide="users" class="w-5 h-5 text-[#14453D]"></i>
+              </div>
+              <div>
+                <p class="text-xs font-extrabold text-[#14453D]">Konsultasi & Kurasi Tim</p>
+                <p class="text-[10px] text-zinc-500">Membantu 500+ UMKM & Seller berkembang</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== 3. CARA TITIP JUAL (3 STEP CARDS EXACT MOCKUP) ==================== -->
+  <section id="cara-kerja" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+    
+    <div class="text-center mb-8">
+      <h2 class="text-2xl font-extrabold text-[#14453D] font-brand tracking-tight">
+        Cara Titip Jual
+      </h2>
+      <p class="text-xs text-zinc-500 mt-1">Hanya 3 langkah mudah untuk mulai menjual produkmu di TitipLaku</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <!-- Card 1: Daftar & Upload -->
+      <div class="feature-step-card bg-white p-6 rounded-2xl border border-zinc-200 text-center flex flex-col items-center shadow-xs">
+        <div class="w-14 h-14 rounded-2xl bg-[#EBF5F3] flex items-center justify-center text-[#14453D] mb-4 shadow-2xs">
+          <i data-lucide="smartphone" class="w-7 h-7 text-[#14453D]"></i>
+        </div>
+        <h3 class="text-base font-bold text-zinc-900 mb-1.5 font-brand">Daftar & Upload</h3>
+        <p class="text-xs text-zinc-500 leading-relaxed max-w-xs">
+          Isi data barang, foto produk, dan tentukan ekspektasi harga jualmu melalui formulir praktis.
         </p>
       </div>
-      
-      <!-- Banner Cutout Photo -->
-      <div class="w-full md:w-80 h-36 bg-white rounded-xl shadow-xs border border-zinc-200/80 p-2 flex items-center justify-center overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=600&auto=format&fit=crop" alt="Sneakers Showcase" class="h-full object-contain">
+
+      <!-- Card 2: Kirim Barang -->
+      <div class="feature-step-card bg-white p-6 rounded-2xl border border-zinc-200 text-center flex flex-col items-center shadow-xs">
+        <div class="w-14 h-14 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-600 mb-4 shadow-2xs">
+          <i data-lucide="package-check" class="w-7 h-7 text-amber-600"></i>
+        </div>
+        <h3 class="text-base font-bold text-zinc-900 mb-1.5 font-brand">Kirim Barang</h3>
+        <p class="text-xs text-zinc-500 leading-relaxed max-w-xs">
+          Kirim barang ke hub TitipLaku. Tim kami akan melakukan inspeksi fisik, foto profesional, dan promosi.
+        </p>
+      </div>
+
+      <!-- Card 3: Pantau Penjualan & Cairkan Dana -->
+      <div class="feature-step-card bg-white p-6 rounded-2xl border border-zinc-200 text-center flex flex-col items-center shadow-xs">
+        <div class="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600 mb-4 shadow-2xs">
+          <i data-lucide="trending-up" class="w-7 h-7 text-emerald-600"></i>
+        </div>
+        <h3 class="text-base font-bold text-zinc-900 mb-1.5 font-brand">Pantau Penjualan & Cairkan Dana</h3>
+        <p class="text-xs text-zinc-500 leading-relaxed max-w-xs">
+          Pantau status barang secara transparan. Saat produk laku, dana ditransfer langsung ke rekeningmu.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ==================== 4. PRODUK UMKM & TITIP JUAL TERBARU ==================== -->
+  <section id="katalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
+    
+    <!-- Header Title & Filter Tabs -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between pb-4 mb-6 border-b border-zinc-200 gap-4">
+      <div>
+        <h2 id="catalogHeaderTitle" class="text-xl sm:text-2xl font-extrabold text-[#14453D] font-brand">
+          Produk UMKM Terbaru
+        </h2>
+        <p class="text-xs text-zinc-500 mt-0.5" id="productCount">Menampilkan produk pilihan</p>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none" id="catFilterContainer">
+        <button onclick="setCategoryFilter('all')" class="cat-pill active px-3.5 py-1.5 rounded-full text-xs font-bold border border-zinc-200 bg-[#14453D] text-white transition whitespace-nowrap" data-cat="all">
+          Semua
+        </button>
+        <button onclick="setCategoryFilter('kuliner')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-bold border border-zinc-200 bg-white text-zinc-700 hover:border-zinc-400 transition whitespace-nowrap" data-cat="kuliner">
+          Kuliner & Camilan
+        </button>
+        <button onclick="setCategoryFilter('kerajinan')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-bold border border-zinc-200 bg-white text-zinc-700 hover:border-zinc-400 transition whitespace-nowrap" data-cat="kerajinan">
+          Kerajinan Tangan
+        </button>
+        <button onclick="setCategoryFilter('clothing')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-bold border border-zinc-200 bg-white text-zinc-700 hover:border-zinc-400 transition whitespace-nowrap" data-cat="clothing">
+          Pakaian & Vintage
+        </button>
+        <button onclick="setCategoryFilter('footwear')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-bold border border-zinc-200 bg-white text-zinc-700 hover:border-zinc-400 transition whitespace-nowrap" data-cat="footwear">
+          Sepatu & Sneakers
+        </button>
+        <button onclick="setCategoryFilter('gadgets')" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-bold border border-zinc-200 bg-white text-zinc-700 hover:border-zinc-400 transition whitespace-nowrap" data-cat="gadgets">
+          Kamera & Gadget
+        </button>
       </div>
     </div>
-  </div>
 
-  <!-- 5. Breadcrumb -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 text-[11px] text-zinc-400 flex items-center gap-1.5">
-    <a href="#" class="hover:text-black">Home</a>
-    <span>&rsaquo;</span>
-    <span class="hover:text-black">Katalog Second</span>
-    <span>&rsaquo;</span>
-    <span id="breadcrumbCategory" class="text-black font-medium">Sneakers & Koleksi Terpilih</span>
-  </div>
-
-  <!-- 6. Main 2-Column Storefront Layout (Zalora Style Sidebar + Product Grid) -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-      
-      <!-- ================= LEFT STICKY FILTER SIDEBAR ================= -->
-      <aside class="lg:col-span-3 space-y-6 bg-white lg:sticky lg:top-32 border-b lg:border-b-0 pb-6 lg:pb-0">
-        
-        <!-- Filter Header -->
-        <div class="flex items-center justify-between pb-3 border-b border-zinc-200">
-          <span class="text-xs font-bold uppercase tracking-wider text-black">Filter Pilihan</span>
-          <button onclick="resetAllFilters()" class="text-[11px] text-zinc-400 hover:text-black transition">
-            Reset Semua
-          </button>
-        </div>
-
-        <!-- 1. Filter Brand (With Search Box like Zalora) -->
-        <div class="border-b border-zinc-200 pb-5">
-          <div class="flex items-center justify-between text-xs font-bold text-zinc-900 mb-3 cursor-pointer">
-            <span>Brand</span>
-            <i data-lucide="chevron-down" class="w-4 h-4 text-zinc-400"></i>
-          </div>
-          
-          <!-- Inline Brand Search Input -->
-          <div class="relative mb-3">
-            <i data-lucide="search" class="w-3.5 h-3.5 text-zinc-400 absolute left-2.5 top-1/2 -translate-y-1/2"></i>
-            <input 
-              type="text" 
-              id="brandSearchInput" 
-              placeholder="Pencarian Brand" 
-              class="w-full pl-8 pr-3 py-1.5 text-xs border border-zinc-200 rounded-lg focus:outline-none focus:border-black"
-            >
-          </div>
-
-          <!-- Brand Checkbox List -->
-          <div id="brandListContainer" class="space-y-2 max-h-40 overflow-y-auto pr-1 text-xs text-zinc-600">
-            <!-- Injected via JavaScript -->
-          </div>
-        </div>
-
-        <!-- 2. Filter Grade Kondisi (Second Hand Unique) -->
-        <div class="border-b border-zinc-200 pb-5">
-          <div class="flex items-center justify-between text-xs font-bold text-zinc-900 mb-3 cursor-pointer">
-            <span>Kondisi / Grade</span>
-            <i data-lucide="chevron-down" class="w-4 h-4 text-zinc-400"></i>
-          </div>
-
-          <div class="space-y-2 text-xs">
-            <label class="flex items-center gap-2 cursor-pointer hover:text-black">
-              <input type="checkbox" name="gradeFilter" value="Grade S" onchange="applyFilters()" class="rounded text-black focus:ring-0">
-              <span class="font-medium text-emerald-700">Grade S</span>
-              <span class="text-zinc-400 text-[11px]">(Like New / Mint)</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer hover:text-black">
-              <input type="checkbox" name="gradeFilter" value="Grade A" onchange="applyFilters()" class="rounded text-black focus:ring-0">
-              <span class="font-medium text-blue-700">Grade A</span>
-              <span class="text-zinc-400 text-[11px]">(Sangat Mulus)</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer hover:text-black">
-              <input type="checkbox" name="gradeFilter" value="Grade B" onchange="applyFilters()" class="rounded text-black focus:ring-0">
-              <span class="font-medium text-amber-700">Grade B</span>
-              <span class="text-zinc-400 text-[11px]">(Vintage Patina)</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- 3. Filter Ukuran (Tabs: AUS, Brand Size, EU, UK) -->
-        <div class="border-b border-zinc-200 pb-5">
-          <div class="flex items-center justify-between text-xs font-bold text-zinc-900 mb-2">
-            <span>Ukuran</span>
-            <i data-lucide="chevron-down" class="w-4 h-4 text-zinc-400"></i>
-          </div>
-
-          <!-- Size System Tabs -->
-          <div class="flex gap-2 text-[10px] font-semibold text-zinc-400 mb-3 border-b border-zinc-100 pb-1">
-            <button class="text-black border-b border-black pb-0.5">EU</button>
-            <button class="hover:text-black">UK</button>
-            <button class="hover:text-black">US</button>
-            <button class="hover:text-black">Pakaian</button>
-          </div>
-
-          <!-- Size Buttons Grid -->
-          <div class="grid grid-cols-4 gap-1.5 text-xs text-center" id="sizePillContainer">
-            <button onclick="toggleSizeFilter(this, '39')" class="size-btn py-1.5 border border-zinc-200 rounded text-zinc-700 hover:border-black transition">39</button>
-            <button onclick="toggleSizeFilter(this, '40')" class="size-btn py-1.5 border border-zinc-200 rounded text-zinc-700 hover:border-black transition">40</button>
-            <button onclick="toggleSizeFilter(this, '41')" class="size-btn py-1.5 border border-zinc-200 rounded text-zinc-700 hover:border-black transition">41</button>
-            <button onclick="toggleSizeFilter(this, '42')" class="size-btn py-1.5 border border-zinc-200 rounded text-zinc-700 hover:border-black transition">42</button>
-            <button onclick="toggleSizeFilter(this, '43')" class="size-btn py-1.5 border border-zinc-200 rounded text-zinc-700 hover:border-black transition">43</button>
-            <button onclick="toggleSizeFilter(this, 'S')" class="size-btn py-1.5 border border-zinc-200 rounded text-zinc-700 hover:border-black transition">S</button>
-            <button onclick="toggleSizeFilter(this, 'M')" class="size-btn py-1.5 border border-zinc-200 rounded text-zinc-700 hover:border-black transition">M</button>
-            <button onclick="toggleSizeFilter(this, 'L')" class="size-btn py-1.5 border border-zinc-200 rounded text-zinc-700 hover:border-black transition">L</button>
-          </div>
-        </div>
-
-        <!-- 4. Filter Harga -->
-        <div>
-          <div class="flex items-center justify-between text-xs font-bold text-zinc-900 mb-3">
-            <span>Rentang Harga</span>
-            <i data-lucide="chevron-down" class="w-4 h-4 text-zinc-400"></i>
-          </div>
-
-          <div class="space-y-1.5 text-xs text-zinc-600">
-            <label class="flex items-center gap-2 cursor-pointer hover:text-black">
-              <input type="radio" name="priceRange" value="all" checked onchange="applyFilters()" class="text-black focus:ring-0">
-              <span>Semua Harga</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer hover:text-black">
-              <input type="radio" name="priceRange" value="under-2m" onchange="applyFilters()" class="text-black focus:ring-0">
-              <span>Di bawah Rp 2.000.000</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer hover:text-black">
-              <input type="radio" name="priceRange" value="2m-4m" onchange="applyFilters()" class="text-black focus:ring-0">
-              <span>Rp 2.000.000 - Rp 4.000.000</span>
-            </label>
-            <label class="flex items-center gap-2 cursor-pointer hover:text-black">
-              <input type="radio" name="priceRange" value="above-4m" onchange="applyFilters()" class="text-black focus:ring-0">
-              <span>Di atas Rp 4.000.000</span>
-            </label>
-          </div>
-        </div>
-
-      </aside>
-
-      <!-- ================= RIGHT PRODUCT GRID ================= -->
-      <section class="lg:col-span-9">
-        
-        <!-- Top Controls Bar (Zalora: Title + DAPATKAN BESOK badge + Sort dropdown) -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-6 border-b border-zinc-200 gap-4">
-          <div>
-            <h2 id="catalogHeaderTitle" class="text-base font-bold text-zinc-900">
-              Koleksi Barang Second Pilihan
-            </h2>
-            <span id="productCount" class="text-xs text-zinc-400">Memuat katalog...</span>
-          </div>
-
-          <div class="flex items-center gap-3">
-            <!-- Zalora Green Badge "DAPATKAN BESOK" -->
-            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded border border-emerald-600 bg-emerald-50 text-[11px] font-bold text-emerald-800 tracking-wider uppercase">
-              <i data-lucide="zap" class="w-3.5 h-3.5 text-emerald-600"></i>
-              <span>DAPATKAN BESOK</span>
-            </div>
-
-            <!-- Sort Dropdown ("Atur ⇅") -->
-            <div class="flex items-center gap-1.5 text-xs text-zinc-600">
-              <select id="sortSelect" onchange="applyFilters()" class="px-3 py-1.5 text-xs border border-zinc-300 rounded font-medium bg-white text-zinc-800 focus:outline-none focus:border-black cursor-pointer">
-                <option value="default">Atur ⇅: Rekomendasi</option>
-                <option value="price-low">Harga: Rendah ke Tinggi</option>
-                <option value="price-high">Harga: Tinggi ke Rendah</option>
-                <option value="discount">Diskon Tertinggi</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <!-- Zalora Fashion Cards Grid (3 Columns) -->
-        <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-8">
-          <!-- Injected via JavaScript -->
-        </div>
-
-      </section>
-
+    <!-- Product Grid (Cards matching the laptop & phone screens) -->
+    <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+      <!-- Injected via JavaScript -->
     </div>
-  </main>
 
-  <!-- 7. Minimalist Trust & Service Footer -->
-  <footer class="bg-zinc-950 text-zinc-400 pt-16 pb-12 border-t border-zinc-800 mt-16">
+  </section>
+
+  <!-- ==================== 5. FOOTER ==================== -->
+  <footer id="tentang-kami" class="bg-[#14453D] text-white pt-12 pb-8 border-t border-emerald-900 mt-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 pb-12 border-b border-zinc-800 text-xs">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-emerald-800/60 text-xs">
         <div>
-          <span class="font-brand text-xl font-extrabold text-white tracking-[0.2em] block mb-3 uppercase">
-            TITIPJUALSECOND
+          <span class="font-brand text-2xl font-extrabold text-white tracking-tight block mb-2">
+            Titip<span class="text-[#F36926]">Laku</span>
           </span>
-          <p class="text-zinc-400 leading-relaxed font-light">
-            Marketplace kurasi barang pre-loved dan vintage terlengkap dengan standar transparansi inspeksi 100%.
+          <p class="text-emerald-100 leading-relaxed font-light">
+            Platform titip jual (konsinyasi) UMKM dan kurasi barang second terpercaya di Indonesia. Kami bantu produkmu laku dengan jangkauan nasional.
           </p>
         </div>
 
         <div>
-          <h4 class="font-bold text-white uppercase tracking-wider mb-3">Layanan Pembeli</h4>
-          <ul class="space-y-2">
-            <li><a href="#" class="hover:text-white transition">Panduan Standar Grade</a></li>
-            <li><a href="#" class="hover:text-white transition">Garansi Cek Fisik 48 Jam</a></li>
-            <li><a href="#" class="hover:text-white transition">Lacak Pengiriman</a></li>
-            <li><a href="https://wa.me/6281234567890" target="_blank" class="hover:text-white transition">Customer Support</a></li>
+          <h4 class="font-bold text-white uppercase tracking-wider mb-3">Layanan</h4>
+          <ul class="space-y-2 text-emerald-100">
+            <li><a href="#cara-kerja" class="hover:text-white transition">Cara Titip Jual</a></li>
+            <li><a href="#" onclick="openConsignmentModal()" class="hover:text-white transition">Form Pengajuan Konsinyasi</a></li>
+            <li><a href="#" class="hover:text-white transition">Standar Inspeksi & Kurasi</a></li>
+            <li><a href="https://wa.me/6281234567890" target="_blank" class="hover:text-white transition">Customer Care WhatsApp</a></li>
           </ul>
         </div>
 
         <div>
-          <h4 class="font-bold text-white uppercase tracking-wider mb-3">Kategori Pilihan</h4>
-          <ul class="space-y-2">
-            <li><a href="#" onclick="setDepartment('footwear')" class="hover:text-white transition">Sneakers & Sepatu</a></li>
-            <li><a href="#" onclick="setDepartment('clothing')" class="hover:text-white transition">Jaket & Pakaian Vintage</a></li>
-            <li><a href="#" onclick="setDepartment('gadgets')" class="hover:text-white transition">Kamera & Audio</a></li>
-            <li><a href="#" onclick="setDepartment('accessories')" class="hover:text-white transition">Jam Tangan & Aksesoris</a></li>
+          <h4 class="font-bold text-white uppercase tracking-wider mb-3">Kategori Produk</h4>
+          <ul class="space-y-2 text-emerald-100">
+            <li><a href="#" onclick="setCategoryFilter('kuliner')" class="hover:text-white transition">Kuliner Tradisional</a></li>
+            <li><a href="#" onclick="setCategoryFilter('kerajinan')" class="hover:text-white transition">Kerajinan Anyaman Lokal</a></li>
+            <li><a href="#" onclick="setCategoryFilter('clothing')" class="hover:text-white transition">Pakaian & Vintage</a></li>
+            <li><a href="#" onclick="setCategoryFilter('gadgets')" class="hover:text-white transition">Kamera & Koleksi</a></li>
           </ul>
         </div>
 
         <div>
-          <h4 class="font-bold text-white uppercase tracking-wider mb-3">Keamanan & Orisinalitas</h4>
-          <p class="text-zinc-400 leading-relaxed mb-3">
-            Setiap produk second melewati verifikasi nomor seri dan uji coba komponen teknis sebelum dikirimkan.
+          <h4 class="font-bold text-white uppercase tracking-wider mb-3">Kantor & Hub Titip</h4>
+          <p class="text-emerald-100 leading-relaxed mb-3 font-light">
+            Hub Kurasi TitipLaku Jakarta & Bandung<br>
+            Jl. Sukajadi No. 88, Bandung, Jawa Barat
           </p>
-          <div class="flex items-center gap-2 text-emerald-400 font-semibold text-[11px]">
-            <i data-lucide="shield-check" class="w-4 h-4"></i>
-            100% Originality Guaranteed
+          <div class="flex items-center gap-2 text-emerald-300 font-semibold text-[11px]">
+            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+            Garansi Transaksi Aman & Terpercaya
           </div>
         </div>
       </div>
 
-      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-zinc-500 gap-4">
-        <div>&copy; 2026 TITIPJUALSECOND Indonesia. All rights reserved.</div>
-        <div class="flex items-center gap-6">
-          <a href="#" class="hover:text-zinc-300">Syarat & Ketentuan</a>
-          <a href="#" class="hover:text-zinc-300">Kebijakan Privasi</a>
-          <span class="cursor-pointer hover:text-zinc-300" onclick="openAuthModal()">Akses Portal</span>
+      <div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-emerald-200 gap-3">
+        <div>&copy; 2026 TitipLaku Indonesia. All rights reserved.</div>
+        <div class="flex items-center gap-4">
+          <a href="#" class="hover:text-white">Syarat & Ketentuan</a>
+          <a href="#" class="hover:text-white">Kebijakan Privasi</a>
+          <span class="cursor-pointer hover:text-white underline" onclick="openAuthModal()">Akses Admin</span>
         </div>
       </div>
 
     </div>
   </footer>
 
-  <!-- 8. Floating Action Widget (Zalora Style Dark Button) -->
-  <button onclick="openCartDrawer()" class="fixed bottom-6 right-6 z-30 w-12 h-12 rounded-full bg-black text-white shadow-2xl flex items-center justify-center hover:scale-105 transition" title="Buka Keranjang">
-    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-  </button>
+  <!-- ==================== 6. MOBILE STICKY BOTTOM NAVIGATION (EXACT PHONE MOCKUP) ==================== -->
+  <nav class="lg:hidden fixed bottom-0 inset-x-0 bg-white border-t border-zinc-200 mobile-bottom-nav z-40 py-2 px-6 flex items-center justify-between text-[10px] font-bold text-zinc-500">
+    <a href="index.html" class="flex flex-col items-center gap-1 text-[#14453D]">
+      <i data-lucide="home" class="w-5 h-5"></i>
+      <span>Beranda</span>
+    </a>
+    <button onclick="openConsignmentModal()" class="flex flex-col items-center gap-1 hover:text-[#14453D]">
+      <i data-lucide="package" class="w-5 h-5"></i>
+      <span>Titipan Saya</span>
+    </button>
+    <a href="#katalog" class="flex flex-col items-center gap-1 hover:text-[#14453D]">
+      <i data-lucide="search" class="w-5 h-5"></i>
+      <span>Eksplor</span>
+    </a>
+    <button onclick="openCartDrawer()" class="flex flex-col items-center gap-1 hover:text-[#14453D] relative">
+      <i data-lucide="message-square" class="w-5 h-5"></i>
+      <span>Pesanan</span>
+    </button>
+    <button onclick="openAuthModal()" class="flex flex-col items-center gap-1 hover:text-[#14453D]">
+      <i data-lucide="user" class="w-5 h-5"></i>
+      <span>Akun</span>
+    </button>
+  </nav>
 
   <!-- ==================== MODALS & DRAWERS ==================== -->
 
-  <!-- Cart Slide-Over Drawer -->
+  <!-- Cart Drawer -->
   <div id="cartBackdrop" onclick="closeCartDrawer()" class="fixed inset-0 modal-backdrop z-50 hidden transition-opacity"></div>
   <div id="cartDrawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-white z-50 shadow-2xl translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
-    <div class="p-5 border-b border-zinc-200 flex items-center justify-between">
+    <div class="p-5 border-b border-zinc-200 flex items-center justify-between bg-[#14453D] text-white">
       <div class="flex items-center gap-2">
-        <i data-lucide="shopping-bag" class="w-5 h-5 text-black"></i>
-        <h3 class="font-bold text-xs uppercase tracking-wider text-black">Kantong Belanja Anda</h3>
+        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+        <h3 class="font-bold text-xs uppercase tracking-wider">Keranjang Belanja TitipLaku</h3>
       </div>
-      <button onclick="closeCartDrawer()" class="p-1 rounded-full hover:bg-zinc-100 text-zinc-400 hover:text-black transition">
+      <button onclick="closeCartDrawer()" class="p-1 rounded-full hover:bg-white/10 text-white transition">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
     </div>
 
     <div class="flex-1 overflow-y-auto p-5">
       <div id="cartEmptyState" class="hidden py-16 text-center">
-        <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-400">
+        <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-[#EBF5F3] flex items-center justify-center text-[#14453D]">
           <i data-lucide="shopping-bag" class="w-8 h-8"></i>
         </div>
-        <h4 class="text-sm font-bold text-black mb-1">Kantong belanja masih kosong</h4>
-        <p class="text-xs text-zinc-500 mb-4">Setiap barang second di sini unik dan hanya tersedia 1 unit.</p>
-        <button onclick="closeCartDrawer()" class="text-xs font-bold px-5 py-2.5 bg-black text-white rounded hover:bg-zinc-800 transition">
-          Mulai Belanja
+        <h4 class="text-sm font-bold text-zinc-800 mb-1">Keranjang masih kosong</h4>
+        <p class="text-xs text-zinc-500 mb-4">Yuk dukung UMKM & produk titip jual lokal.</p>
+        <button onclick="closeCartDrawer()" class="text-xs font-bold px-5 py-2.5 bg-[#14453D] text-white rounded-full hover:bg-[#0D332D] transition">
+          Jelajahi Produk
         </button>
       </div>
 
@@ -389,20 +410,20 @@
 
     <div class="p-5 border-t border-zinc-200 bg-zinc-50 space-y-3">
       <div class="flex justify-between items-baseline">
-        <span class="text-xs text-zinc-500 uppercase tracking-wider font-semibold">Subtotal:</span>
-        <span id="cartSubtotal" class="text-lg font-extrabold text-black">Rp 0</span>
+        <span class="text-xs text-zinc-500 font-semibold uppercase">Total Pembayaran:</span>
+        <span id="cartSubtotal" class="text-lg font-extrabold text-[#14453D]">Rp 0</span>
       </div>
-      <button onclick="openCheckoutModal()" class="w-full py-3.5 bg-black text-white font-bold text-xs uppercase tracking-widest hover:bg-zinc-800 transition flex items-center justify-center gap-2 shadow-sm rounded">
+      <button onclick="openCheckoutModal()" class="w-full py-3.5 bg-[#F36926] hover:bg-[#E05615] text-white font-bold text-xs uppercase tracking-widest transition flex items-center justify-center gap-2 shadow-sm rounded-xl">
         <span>Lanjut ke Checkout Pesanan</span>
         <i data-lucide="arrow-right" class="w-4 h-4"></i>
       </button>
     </div>
   </div>
 
-  <!-- Product Detail Modal (Zalora Style) -->
+  <!-- Product Detail Modal -->
   <div id="productModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
     <div class="fixed inset-0 modal-backdrop" onclick="closeProductModal()"></div>
-    <div class="relative bg-white rounded-xl max-w-4xl w-full p-6 sm:p-8 z-10 shadow-2xl max-h-[92vh] overflow-y-auto border border-zinc-200">
+    <div class="relative bg-white rounded-2xl max-w-4xl w-full p-6 sm:p-8 z-10 shadow-2xl max-h-[92vh] overflow-y-auto border border-zinc-200">
       <button onclick="closeProductModal()" class="absolute top-4 right-4 p-2 rounded-full hover:bg-zinc-100 text-zinc-400 hover:text-black transition">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
@@ -410,42 +431,42 @@
     </div>
   </div>
 
-  <!-- Buyer Checkout Modal -->
+  <!-- Checkout Modal -->
   <div id="checkoutModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
     <div class="fixed inset-0 modal-backdrop" onclick="closeCheckoutModal()"></div>
-    <div class="relative bg-white rounded-xl max-w-lg w-full p-6 sm:p-8 z-10 shadow-2xl border border-zinc-200">
+    <div class="relative bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 z-10 shadow-2xl border border-zinc-200">
       <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 p-2 rounded-full hover:bg-zinc-100 text-zinc-400 hover:text-black transition">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
       
       <div class="mb-5">
         <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded">
-          CHECKOUT AMAN & RESMI
+          CHECKOUT AMAN TITIPLAKU
         </span>
-        <h3 class="text-xl font-extrabold text-black mt-1 uppercase font-brand">Konfirmasi Pesanan</h3>
-        <p class="text-xs text-zinc-500 mt-1">Isi alamat Anda. Pesanan akan otomatis dicatat oleh sistem admin dan diteruskan ke WhatsApp untuk pembayaran.</p>
+        <h3 class="text-xl font-extrabold text-[#14453D] mt-1 font-brand">Detail Data Pengiriman</h3>
+        <p class="text-xs text-zinc-500 mt-1">Pesanan Anda langsung tercatat di dashboard admin dan diteruskan ke WhatsApp untuk konfirmasi pengiriman.</p>
       </div>
 
       <form id="checkoutForm" onsubmit="handleBuyerCheckout(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold text-zinc-800 mb-1">Nama Lengkap Penerima</label>
-          <input type="text" id="custName" required placeholder="Contoh: Budi Santoso" class="w-full px-3.5 py-2 text-xs border border-zinc-300 rounded focus:outline-none focus:border-black">
+          <input type="text" id="custName" required placeholder="Contoh: Siti Rahmawati" class="w-full px-3.5 py-2 text-xs border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D]">
         </div>
 
         <div>
           <label class="block text-xs font-semibold text-zinc-800 mb-1">Nomor WhatsApp Aktif</label>
-          <input type="tel" id="custPhone" required placeholder="Contoh: 081234567890" class="w-full px-3.5 py-2 text-xs border border-zinc-300 rounded focus:outline-none focus:border-black">
+          <input type="tel" id="custPhone" required placeholder="Contoh: 081234567890" class="w-full px-3.5 py-2 text-xs border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D]">
         </div>
 
         <div>
           <label class="block text-xs font-semibold text-zinc-800 mb-1">Alamat Lengkap Pengiriman</label>
-          <textarea id="custAddress" required rows="2" placeholder="Nama Jalan, No. Rumah, RT/RW, Kelurahan, Kecamatan, Kota, Kode Pos" class="w-full px-3.5 py-2 text-xs border border-zinc-300 rounded focus:outline-none focus:border-black"></textarea>
+          <textarea id="custAddress" required rows="2" placeholder="Nama Jalan, No. Rumah, RT/RW, Kelurahan, Kecamatan, Kota, Kode Pos" class="w-full px-3.5 py-2 text-xs border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D]"></textarea>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-semibold text-zinc-800 mb-1">Pilihan Ekspedisi</label>
-            <select id="custCourier" class="w-full px-3 py-2 text-xs border border-zinc-300 rounded focus:outline-none focus:border-black bg-white">
+            <select id="custCourier" class="w-full px-3 py-2 text-xs border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D] bg-white">
               <option value="JNE Regular / YES">JNE Regular / YES</option>
               <option value="SiCepat Best">SiCepat Best</option>
               <option value="J&T Express">J&T Express</option>
@@ -453,49 +474,106 @@
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-zinc-800 mb-1">Catatan (Opsional)</label>
-            <input type="text" id="custNotes" placeholder="Titip pos satpam, dll" class="w-full px-3.5 py-2 text-xs border border-zinc-300 rounded focus:outline-none focus:border-black">
+            <label class="block text-xs font-semibold text-zinc-800 mb-1">Catatan Pesanan</label>
+            <input type="text" id="custNotes" placeholder="Titip satpam / packing ekstra" class="w-full px-3.5 py-2 text-xs border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D]">
           </div>
         </div>
 
-        <button type="submit" class="w-full py-3.5 bg-black text-white font-bold text-xs uppercase tracking-widest hover:bg-zinc-800 transition flex items-center justify-center gap-2 mt-4 shadow-sm rounded">
+        <button type="submit" class="w-full py-3.5 bg-[#F36926] hover:bg-[#E05615] text-white font-bold text-xs uppercase tracking-widest transition flex items-center justify-center gap-2 mt-4 shadow-sm rounded-xl">
           <i data-lucide="check" class="w-4 h-4"></i>
-          Konfirmasi & Beli Sekarang
+          Konfirmasi & Pesan via WhatsApp
         </button>
       </form>
     </div>
   </div>
 
-  <!-- Security: Admin Login Modal Gate (Hanya Admin yang Tahu Password) -->
-  <div id="authModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+  <!-- Form Titip Barang (Konsinyasi Modal) -->
+  <div id="consignmentModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div class="fixed inset-0 modal-backdrop" onclick="closeConsignmentModal()"></div>
+    <div class="relative bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 z-10 shadow-2xl border border-zinc-200">
+      <button onclick="closeConsignmentModal()" class="absolute top-4 right-4 p-2 rounded-full hover:bg-zinc-100 text-zinc-400 hover:text-black transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="mb-5">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-[#F36926] bg-orange-50 px-2.5 py-0.5 rounded">
+          KONSINYASI RESMI TITIPLAKU
+        </span>
+        <h3 class="text-xl font-extrabold text-[#14453D] mt-1 font-brand">Titip Produk UMKM / Second</h3>
+        <p class="text-xs text-zinc-500 mt-1">Kami bantu foto, pasarkan di katalog, dan kirimkan barang ke pembeli.</p>
+      </div>
+
+      <form id="consignmentForm" onsubmit="handleConsignmentSubmit(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-zinc-800 mb-1">Nama Produk / Merek</label>
+          <input type="text" id="consignName" required placeholder="Contoh: Kripik Tempe Renyah / Sepatu Boots" class="w-full px-3.5 py-2 text-xs border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D]">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-zinc-800 mb-1">Kategori</label>
+            <select id="consignCat" class="w-full px-3 py-2 text-xs border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D] bg-white">
+              <option value="Kuliner & Camilan">Kuliner & Camilan</option>
+              <option value="Kerajinan Tangan">Kerajinan Tangan</option>
+              <option value="Pakaian & Vintage">Pakaian & Vintage</option>
+              <option value="Sepatu & Sneakers">Sepatu & Sneakers</option>
+              <option value="Kamera & Gadget">Kamera & Gadget</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-zinc-800 mb-1">Ekspektasi Harga (Rp)</label>
+            <input type="number" id="consignPrice" required placeholder="Contoh: 50000" class="w-full px-3.5 py-2 text-xs border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D]">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-zinc-800 mb-1">Lokasi / Asal UMKM</label>
+          <input type="text" id="consignOrigin" required placeholder="Contoh: UMKM Bandung / Koleksi Pribadi Jogja" class="w-full px-3.5 py-2 text-xs border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D]">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-zinc-800 mb-1">Kondisi & Deskripsi Singkat</label>
+          <textarea id="consignDesc" rows="2" placeholder="Jelaskan keistimewaan produk, isi kemasan, atau kondisi..." class="w-full px-3.5 py-2 text-xs border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D]"></textarea>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 bg-[#F36926] hover:bg-[#E05615] text-white font-bold text-xs uppercase tracking-widest transition flex items-center justify-center gap-2 mt-4 shadow-sm rounded-xl">
+          <i data-lucide="send" class="w-4 h-4"></i>
+          Kirim Pengajuan Titip ke WhatsApp Admin
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Security: Admin Auth Modal Gate -->
+  <div id="authModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
     <div class="fixed inset-0 modal-backdrop" onclick="closeAuthModal()"></div>
-    <div class="relative bg-white rounded-xl max-w-sm w-full p-6 sm:p-8 z-10 shadow-2xl border border-zinc-200">
+    <div class="relative bg-white rounded-2xl max-w-sm w-full p-6 sm:p-8 z-10 shadow-2xl border border-zinc-200">
       <button onclick="closeAuthModal()" class="absolute top-4 right-4 p-2 rounded-full hover:bg-zinc-100 text-zinc-400 hover:text-black transition">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
       
       <div class="text-center mb-6">
-        <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-zinc-100 flex items-center justify-center text-black">
-          <i data-lucide="lock" class="w-6 h-6"></i>
+        <div class="w-12 h-12 mx-auto mb-3 rounded-2xl bg-[#EBF5F3] flex items-center justify-center text-[#14453D]">
+          <i data-lucide="shield-check" class="w-6 h-6"></i>
         </div>
-        <h3 class="text-lg font-bold text-black uppercase tracking-wider font-brand">Akses Admin</h3>
-        <p class="text-xs text-zinc-500 mt-1">Area terbatas khusus pemilik & pengelola toko titipjualsecond.</p>
+        <h3 class="text-lg font-bold text-[#14453D] uppercase tracking-wider font-brand">Akses Admin TitipLaku</h3>
+        <p class="text-xs text-zinc-500 mt-1">Area terbatas khusus pengelola dan kurator toko.</p>
       </div>
 
       <form onsubmit="handleAdminLogin(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-semibold text-zinc-800 mb-1">Password / PIN Admin</label>
+          <label class="block text-xs font-semibold text-zinc-800 mb-1">Password Admin</label>
           <input 
             type="password" 
             id="adminPinInput" 
             required 
             placeholder="Masukkan password admin" 
-            class="w-full px-3.5 py-2.5 text-xs border border-zinc-300 rounded focus:outline-none focus:border-black text-center tracking-widest font-mono text-sm"
+            class="w-full px-3.5 py-2.5 text-xs border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D] text-center tracking-widest font-mono text-sm"
           >
-          <p class="text-[10px] text-zinc-400 text-center mt-1.5">Default password: <span class="font-mono text-zinc-700">admin123</span></p>
+          <p class="text-[10px] text-zinc-400 text-center mt-1.5">Default PIN: <span class="font-mono text-zinc-700">admin123</span></p>
         </div>
 
-        <button type="submit" class="w-full py-3 bg-black text-white font-bold text-xs uppercase tracking-widest hover:bg-zinc-800 transition rounded shadow-sm">
+        <button type="submit" class="w-full py-3 bg-[#14453D] hover:bg-[#0D332D] text-white font-bold text-xs uppercase tracking-widest transition rounded-lg shadow-sm">
           Masuk ke CMS Admin
         </button>
       </form>
@@ -504,7 +582,7 @@
 
   <!-- Toast Notification -->
   <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 hidden">
-    <div class="bg-black text-white text-xs py-3 px-5 rounded-full shadow-2xl flex items-center gap-2 border border-zinc-700">
+    <div class="bg-[#14453D] text-white text-xs py-3 px-5 rounded-full shadow-2xl flex items-center gap-2 border border-emerald-700">
       <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
       <span id="toastMessage">Pemberitahuan</span>
     </div>

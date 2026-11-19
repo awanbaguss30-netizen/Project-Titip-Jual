@@ -1,161 +1,151 @@
 /* 
- * titipjualsecond - Zalora-Inspired Minimalist E-Commerce Styles
+ * TitipLaku - Modern Indonesian UMKM & Consignment Theme
+ * Terinspirasi dari layout clean, hijau hutan & aksen oranye ramah
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Montserrat:wght@500;600;700;800&display=swap');
 
 :root {
-  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-brand: 'Montserrat', sans-serif;
-  --zalora-black: #000000;
-  --zalora-dark: #1F1F1F;
-  --zalora-gray: #666666;
-  --zalora-border: #E5E7EB;
-  --zalora-bg-light: #F9F9F9;
-  --zalora-green: #008A00;
-  --grade-s-color: #059669;
-  --grade-a-color: #2563EB;
-  --grade-b-color: #D97706;
+  --titiplaku-green: #14453D;
+  --titiplaku-green-dark: #0D332D;
+  --titiplaku-green-light: #EBF5F3;
+  --titiplaku-orange: #F36926;
+  --titiplaku-orange-hover: #E05615;
+  --titiplaku-bg: #F8F9FA;
+  --titiplaku-border: #E5E7EB;
+  --titiplaku-text-main: #18181B;
+  --titiplaku-text-muted: #64748B;
 }
 
 body {
-  font-family: var(--font-main);
-  background-color: #FFFFFF;
-  color: #1A1A1A;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--titiplaku-bg);
+  color: var(--titiplaku-text-main);
   -webkit-font-smoothing: antialiased;
 }
 
 .font-brand {
-  font-family: var(--font-brand);
+  font-family: 'Montserrat', sans-serif;
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #FAFAFA;
+  background: #F1F5F9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D1D5DB;
+  background: #CBD5E1;
   border-radius: 9999px;
 }
-
-/* Zalora Header Ticker */
-.top-ticker {
-  background-color: #F8F9FA;
-  border-bottom: 1px solid #EFEFEF;
-  font-size: 11px;
-  letter-spacing: 0.02em;
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
 }
 
-/* Zalora Search Pill */
-.zalora-search-bar {
-  border: 1px solid #D5D7DA;
-  border-radius: 9999px;
-  transition: all 0.2s ease;
-}
-.zalora-search-bar:focus-within {
-  border-color: #000000;
-  box-shadow: 0 0 0 1px #000000;
+/* Hero Deep Forest Green Card */
+.hero-forest-bg {
+  background: linear-gradient(135deg, #14453D 0%, #0F3A33 100%);
 }
 
-/* Zalora Department Nav Links */
-.dept-nav-link {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #111111;
-  position: relative;
-  padding: 8px 0;
-  transition: color 0.2s ease;
+/* Rounded Pill Button Orange */
+.btn-orange-pill {
+  background-color: var(--titiplaku-orange);
+  color: #FFFFFF;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.dept-nav-link:hover {
-  color: #000000;
-}
-.dept-nav-link.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background-color: #000000;
+.btn-orange-pill:hover {
+  background-color: var(--titiplaku-orange-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(243, 105, 38, 0.35);
 }
 
-/* Zalora Fashion Product Card (Tall 3:4 Aspect Ratio) */
-.zalora-card {
+/* Feature Step Card Hover */
+.feature-step-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.feature-step-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -6px rgba(20, 69, 61, 0.08);
+}
+
+/* Product Card Matching Mockup */
+.titiplaku-card {
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+  border-radius: 16px;
 }
-.zalora-card:hover {
-  box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.09);
+.titiplaku-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px -8px rgba(0, 0, 0, 0.08);
 }
 
-.zalora-card-img-wrap {
+.titiplaku-card-img-wrap {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 3 / 4;
-  background-color: #F8F8F8;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  aspect-ratio: 1 / 1;
+  background-color: #F1F5F9;
 }
-
-.zalora-card-img-wrap img {
+.titiplaku-card-img-wrap img {
   transition: transform 0.4s ease;
 }
-.zalora-card:hover .zalora-card-img-wrap img {
-  transform: scale(1.04);
+.titiplaku-card:hover .titiplaku-card-img-wrap img {
+  transform: scale(1.05);
 }
 
-/* Hover Quick View Button */
-.quick-view-hover {
-  opacity: 0;
-  transform: translateY(8px);
-  transition: all 0.25s ease;
-}
-.zalora-card:hover .quick-view-hover {
-  opacity: 1;
-  transform: translateY(0);
+/* Grade & Location Badges */
+.badge-umkm {
+  background-color: #F0FDF4;
+  color: #166534;
+  border: 1px solid rgba(22, 101, 52, 0.15);
 }
 
-/* Condition Grade Pills */
 .badge-grade-s {
   background-color: #ECFDF5;
   color: #065F46;
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  border: 1px solid rgba(16, 185, 129, 0.25);
 }
 .badge-grade-a {
   background-color: #EFF6FF;
   color: #1E40AF;
-  border: 1px solid rgba(59, 130, 246, 0.3);
+  border: 1px solid rgba(59, 130, 246, 0.25);
 }
 .badge-grade-b {
   background-color: #FFFBEB;
   color: #92400E;
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  border: 1px solid rgba(245, 158, 11, 0.25);
 }
 
-/* Real-Time Order Popup Animation */
+/* Mobile Sticky Bottom Nav */
+.mobile-bottom-nav {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.05);
+}
+
+/* Backdrop */
+.modal-backdrop {
+  background: rgba(13, 51, 45, 0.65);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+/* Order Notification Animations */
 @keyframes orderRing {
-  0% { transform: scale(0.95); opacity: 0; }
-  50% { transform: scale(1.02); }
+  0% { transform: scale(0.92); opacity: 0; }
+  50% { transform: scale(1.03); }
   100% { transform: scale(1); opacity: 1; }
 }
 .order-popup-animate {
   animation: orderRing 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Pulse animation for new orders */
-@keyframes badgePulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.15); }
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(243, 105, 38, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(243, 105, 38, 0); }
 }
-.badge-pulse {
-  animation: badgePulse 1.2s infinite;
-}
-
-.modal-backdrop {
-  background: rgba(0, 0, 0, 0.65);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+.pulse-glow {
+  animation: pulseGlow 1.8s infinite;
 }

@@ -1,15 +1,14 @@
 /**
- * Shared Data Store for titipjualsecond
+ * Shared Data Store for TitipLaku (titipjualsecond)
  * Mengelola Produk, Pesanan Pembeli (Orders), dan Autentikasi Admin
  */
 
 const Store = (function() {
-  const STORAGE_KEY = 'titipjualsecond_products';
-  const ORDERS_KEY = 'titipjualsecond_orders';
-  const AUTH_KEY = 'titipjualsecond_admin_token';
-  const ADMIN_PIN = 'admin123'; // Default PIN/Password Admin
+  const STORAGE_KEY = 'titiplaku_products';
+  const ORDERS_KEY = 'titiplaku_orders';
+  const AUTH_KEY = 'titiplaku_admin_token';
+  const ADMIN_PIN = 'admin123'; // Password Default Admin
 
-  // Inisialisasi Produk
   function initProducts() {
     const existing = localStorage.getItem(STORAGE_KEY);
     if (!existing) {
@@ -31,7 +30,7 @@ const Store = (function() {
 
   function save(products) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-    window.dispatchEvent(new CustomEvent('titipjualsecond:updated', { detail: products }));
+    window.dispatchEvent(new CustomEvent('titiplaku:updated', { detail: products }));
   }
 
   function getById(id) {
@@ -42,32 +41,33 @@ const Store = (function() {
   function add(productData) {
     const products = getAll();
     const newProduct = {
-      id: 'tjs-' + Date.now().toString().slice(-6),
+      id: 'tl-' + Date.now().toString().slice(-6),
       name: productData.name.trim(),
-      brand: productData.brand ? productData.brand.trim() : 'Curated',
-      category: productData.category || 'clothing',
-      gender: productData.gender || 'unisex', // wanita, pria, unisex
+      brand: productData.brand ? productData.brand.trim() : 'TitipLaku Partner',
+      sellerLocation: productData.sellerLocation ? productData.sellerLocation.trim() : 'UMKM Indonesia',
+      category: productData.category || 'kuliner',
       categoryLabel: getCategoryLabel(productData.category),
       price: Number(productData.price) || 0,
       originalPrice: Number(productData.originalPrice) || Number(productData.price) || 0,
-      grade: productData.grade || 'Grade A',
-      gradeScore: productData.gradeScore || '95%',
+      grade: productData.grade || 'Grade S',
+      gradeScore: productData.gradeScore || '100%',
       gradeBadge: getGradeBadge(productData.grade),
       isFeatured: !!productData.isFeatured,
       isAvailable: productData.isAvailable !== undefined ? productData.isAvailable : true,
-      stock: productData.isAvailable ? 1 : 0,
+      stock: Number(productData.stock) || 1,
       size: productData.size ? productData.size.trim() : 'Standar',
-      sizeSystem: productData.sizeSystem || 'EU', // EU, UK, US, etc.
+      rating: 5.0,
+      reviewCount: Math.floor(Math.random() * 80) + 12,
       images: Array.isArray(productData.images) && productData.images.length > 0 
         ? productData.images 
-        : ['https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=1000&auto=format&fit=crop'],
-      description: productData.description ? productData.description.trim() : 'Barang second terkurasi kualitas prima.',
+        : ['https://images.unsplash.com/photo-1566478989037-eec170784d0b?q=80&w=800&auto=format&fit=crop'],
+      description: productData.description ? productData.description.trim() : 'Produk titipan berkualitas di TitipLaku.',
       conditionDetails: {
-        physical: productData.conditionPhysical ? productData.conditionPhysical.trim() : 'Kondisi fisik terawat.',
+        physical: productData.conditionPhysical ? productData.conditionPhysical.trim() : 'Kondisi fisik terawat prima.',
         function: productData.conditionFunction ? productData.conditionFunction.trim() : '100% Berfungsi normal.',
-        completeness: productData.conditionCompleteness ? productData.conditionCompleteness.trim() : 'Unit saja.',
-        defect: productData.conditionDefect ? productData.conditionDefect.trim() : 'Minus wajar pemakaian second.',
-        origin: productData.conditionOrigin ? productData.conditionOrigin.trim() : 'Titip jual terverifikasi.'
+        completeness: productData.conditionCompleteness ? productData.conditionCompleteness.trim() : 'Unit lengkap sesuai deskripsi.',
+        defect: productData.conditionDefect ? productData.conditionDefect.trim() : 'Tidak ada defect.',
+        origin: productData.conditionOrigin ? productData.conditionOrigin.trim() : 'Konsinyasi terverifikasi TitipLaku.'
       },
       createdAt: Date.now()
     };
@@ -90,8 +90,8 @@ const Store = (function() {
       ...current,
       name: updatedFields.name !== undefined ? updatedFields.name.trim() : current.name,
       brand: updatedFields.brand !== undefined ? updatedFields.brand.trim() : current.brand,
+      sellerLocation: updatedFields.sellerLocation !== undefined ? updatedFields.sellerLocation.trim() : current.sellerLocation,
       category: category,
-      gender: updatedFields.gender || current.gender || 'unisex',
       categoryLabel: getCategoryLabel(category),
       price: updatedFields.price !== undefined ? Number(updatedFields.price) : current.price,
       originalPrice: updatedFields.originalPrice !== undefined ? Number(updatedFields.originalPrice) : current.originalPrice,
@@ -100,7 +100,7 @@ const Store = (function() {
       gradeBadge: getGradeBadge(grade),
       isFeatured: updatedFields.isFeatured !== undefined ? !!updatedFields.isFeatured : current.isFeatured,
       isAvailable: updatedFields.isAvailable !== undefined ? !!updatedFields.isAvailable : current.isAvailable,
-      stock: (updatedFields.isAvailable !== undefined ? updatedFields.isAvailable : current.isAvailable) ? 1 : 0,
+      stock: updatedFields.stock !== undefined ? Number(updatedFields.stock) : current.stock,
       size: updatedFields.size !== undefined ? updatedFields.size.trim() : current.size,
       images: updatedFields.images && updatedFields.images.length > 0 ? updatedFields.images : current.images,
       description: updatedFields.description !== undefined ? updatedFields.description.trim() : current.description,
@@ -124,7 +124,7 @@ const Store = (function() {
     if (!item) return null;
 
     item.isAvailable = !item.isAvailable;
-    item.stock = item.isAvailable ? 1 : 0;
+    item.stock = item.isAvailable ? (item.stock > 0 ? item.stock : 1) : 0;
     save(products);
     return item;
   }
@@ -143,7 +143,7 @@ const Store = (function() {
   function reset() {
     const initial = (typeof DEFAULT_PRODUCTS !== 'undefined') ? DEFAULT_PRODUCTS : [];
     localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
-    window.dispatchEvent(new CustomEvent('titipjualsecond:updated', { detail: initial }));
+    window.dispatchEvent(new CustomEvent('titiplaku:updated', { detail: initial }));
     return initial;
   }
 
@@ -159,7 +159,7 @@ const Store = (function() {
   function createOrder(orderData) {
     const orders = getOrders();
     const newOrder = {
-      orderId: 'TJS-' + Math.floor(10000 + Math.random() * 90000),
+      orderId: 'TL-' + Math.floor(10000 + Math.random() * 90000),
       createdAt: Date.now(),
       customerName: orderData.name,
       customerPhone: orderData.phone,
@@ -174,11 +174,8 @@ const Store = (function() {
     orders.unshift(newOrder);
     localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
 
-    // Broadcast ke tab admin secara instan
-    window.dispatchEvent(new CustomEvent('titipjualsecond:new_order', { detail: newOrder }));
-    
-    // Juga trigger storage event untuk cross-window sync
-    localStorage.setItem('titipjualsecond_latest_order', JSON.stringify({
+    window.dispatchEvent(new CustomEvent('titiplaku:new_order', { detail: newOrder }));
+    localStorage.setItem('titiplaku_latest_order', JSON.stringify({
       orderId: newOrder.orderId,
       time: Date.now()
     }));
@@ -212,20 +209,21 @@ const Store = (function() {
     sessionStorage.removeItem(AUTH_KEY);
   }
 
-  // Helper
   function getCategoryLabel(cat) {
     const map = {
+      'kuliner': 'Kuliner & Camilan',
+      'kerajinan': 'Kerajinan Tangan',
       'gadgets': 'Kamera & Gadget',
-      'clothing': 'Pakaian & Vintage',
+      'clothing': 'Pakaian & Fashion',
       'footwear': 'Sepatu & Sneakers',
       'accessories': 'Jam & Aksesoris',
       'lifestyle': 'Dekor & Hobi'
     };
-    return map[cat] || 'Koleksi Second';
+    return map[cat] || 'Semua Produk';
   }
 
   function getGradeBadge(grade) {
-    if (grade === 'Grade S') return 'Like New (Mint)';
+    if (grade === 'Grade S') return 'Produksi Baru / Like New';
     if (grade === 'Grade A') return 'Sangat Mulus';
     if (grade === 'Grade B') return 'Authentic Vintage';
     return 'Kondisi Baik';

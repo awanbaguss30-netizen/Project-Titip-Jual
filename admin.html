@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CMS Admin Panel — titipjualsecond</title>
+  <title>CMS Admin Panel — TitipLaku</title>
   
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -17,15 +17,15 @@
 <body class="bg-[#F8F9FA] text-zinc-900 min-h-screen flex flex-col antialiased">
 
   <!-- ==================== 1. SECURITY GATE (LOCKED SCREEN) ==================== -->
-  <div id="adminLockScreen" class="fixed inset-0 z-50 bg-zinc-950 flex items-center justify-center p-4">
+  <div id="adminLockScreen" class="fixed inset-0 z-50 bg-[#0D332D] flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl max-w-sm w-full p-8 shadow-2xl text-center border border-zinc-200">
       
-      <div class="w-16 h-16 rounded-2xl bg-zinc-100 flex items-center justify-center mx-auto mb-4 text-black border border-zinc-200">
-        <i data-lucide="shield-lock" class="w-8 h-8"></i>
+      <div class="w-16 h-16 rounded-2xl bg-[#EBF5F3] flex items-center justify-center mx-auto mb-4 text-[#14453D]">
+        <i data-lucide="shield-check" class="w-8 h-8"></i>
       </div>
 
-      <h2 class="text-xl font-extrabold uppercase tracking-wider text-black font-brand">CMS Terproteksi</h2>
-      <p class="text-xs text-zinc-500 mt-1 mb-6">Area terbatas. Masukkan password pengelola toko untuk membuka dashboard.</p>
+      <h2 class="text-xl font-extrabold uppercase tracking-wider text-[#14453D] font-brand">CMS TitipLaku</h2>
+      <p class="text-xs text-zinc-500 mt-1 mb-6">Area terbatas. Masukkan password pengelola untuk membuka dashboard admin.</p>
 
       <form onsubmit="handleDirectAdminLogin(event)" class="space-y-4">
         <div>
@@ -34,16 +34,16 @@
             id="gatePasswordInput" 
             required 
             placeholder="Password Admin" 
-            class="w-full px-4 py-2.5 text-center text-sm border border-zinc-300 rounded-lg focus:outline-none focus:border-black font-mono tracking-widest"
+            class="w-full px-4 py-2.5 text-center text-sm border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D] font-mono tracking-widest"
           >
-          <p class="text-[10px] text-zinc-400 mt-1.5">Default PIN: <span class="font-mono font-semibold text-zinc-700">admin123</span></p>
+          <p class="text-[10px] text-zinc-400 mt-1.5">Default PIN: <span class="font-mono font-semibold text-[#14453D]">admin123</span></p>
         </div>
 
-        <button type="submit" class="w-full py-2.5 bg-black text-white font-bold text-xs uppercase tracking-widest hover:bg-zinc-800 transition rounded-lg shadow-sm">
+        <button type="submit" class="w-full py-2.5 bg-[#14453D] hover:bg-[#0D332D] text-white font-bold text-xs uppercase tracking-widest transition rounded-lg shadow-sm">
           Buka Dashboard
         </button>
 
-        <a href="index.html" class="block text-xs text-zinc-400 hover:text-black transition pt-2">
+        <a href="index.html" class="block text-xs text-zinc-400 hover:text-[#14453D] transition pt-2">
           &larr; Kembali ke Toko Publik
         </a>
       </form>
@@ -51,19 +51,21 @@
     </div>
   </div>
 
-  <!-- ==================== 2. MAIN CMS DASHBOARD (TERBUKA SETELAH LOGIN) ==================== -->
+  <!-- ==================== 2. MAIN CMS DASHBOARD ==================== -->
   <div id="adminDashboard" class="hidden flex-1 flex flex-col">
     
     <!-- Top Navbar -->
-    <header class="bg-white border-b border-zinc-200 sticky top-0 z-40">
+    <header class="bg-[#14453D] text-white sticky top-0 z-40 shadow-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         
         <!-- Brand & CMS Indicator -->
         <div class="flex items-center gap-3">
-          <span class="font-brand text-xl font-extrabold tracking-widest text-black uppercase">
-            TITIPJUALSECOND
-          </span>
-          <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-black text-white">
+          <a href="index.html" class="flex items-center gap-2">
+            <span class="font-brand text-xl font-extrabold tracking-tight text-white flex items-center">
+              Titip<span class="text-[#F36926]">Laku</span>
+            </span>
+          </a>
+          <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-[#F36926] text-white">
             ADMIN CMS
           </span>
         </div>
@@ -72,25 +74,25 @@
         <div class="flex items-center gap-3">
           
           <!-- Live Orders Bell with Counter -->
-          <button onclick="switchTab('orders')" class="relative p-2 rounded-lg hover:bg-zinc-100 text-zinc-700 transition" title="Lihat Pesanan Masuk">
+          <button onclick="switchTab('orders')" class="relative p-2 rounded-lg hover:bg-white/10 text-white transition" title="Lihat Pesanan Masuk">
             <i data-lucide="bell" class="w-5 h-5"></i>
-            <span id="orderBadgeCounter" class="hidden absolute top-1 right-1 w-4 h-4 bg-red-600 text-white rounded-full text-[9px] font-bold flex items-center justify-center badge-pulse">0</span>
+            <span id="orderBadgeCounter" class="hidden absolute top-1 right-1 w-4 h-4 bg-[#F36926] text-white rounded-full text-[9px] font-bold flex items-center justify-center pulse-glow">0</span>
           </button>
 
           <!-- Buka Toko Publik -->
-          <a href="index.html" target="_blank" class="text-xs font-semibold text-zinc-700 hover:text-black px-3.5 py-1.5 rounded-lg border border-zinc-200 hover:bg-zinc-50 transition flex items-center gap-1.5">
+          <a href="index.html" target="_blank" class="text-xs font-semibold text-emerald-100 hover:text-white px-3.5 py-1.5 rounded-lg border border-white/20 hover:bg-white/10 transition flex items-center gap-1.5">
             <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
             <span class="hidden sm:inline">Lihat Toko</span>
           </a>
 
           <!-- Tambah Barang CTA -->
-          <button onclick="openAddModal()" class="text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-lg bg-black text-white hover:bg-zinc-800 transition flex items-center gap-1.5 shadow-xs">
+          <button onclick="openAddModal()" class="text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-lg bg-[#F36926] hover:bg-[#E05615] text-white transition flex items-center gap-1.5 shadow-xs">
             <i data-lucide="plus" class="w-4 h-4"></i>
-            <span class="hidden sm:inline">+ Posting Barang</span>
+            <span class="hidden sm:inline">+ Posting Produk</span>
           </button>
 
           <!-- Logout -->
-          <button onclick="handleAdminLogout()" class="p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition" title="Keluar / Kunci CMS">
+          <button onclick="handleAdminLogout()" class="p-2 text-emerald-200 hover:text-white hover:bg-white/10 rounded-lg transition" title="Keluar / Kunci CMS">
             <i data-lucide="log-out" class="w-4 h-4"></i>
           </button>
         </div>
@@ -98,17 +100,17 @@
       </div>
 
       <!-- Navigation Tabs: Inventaris vs Pesanan Masuk -->
-      <div class="bg-white border-t border-zinc-100">
+      <div class="bg-white border-b border-zinc-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-6">
-          <button onclick="switchTab('inventory')" id="tabBtnInventory" class="py-3 text-xs font-bold uppercase tracking-wider text-black border-b-2 border-black flex items-center gap-2">
+          <button onclick="switchTab('inventory')" id="tabBtnInventory" class="py-3 text-xs font-bold uppercase tracking-wider text-[#14453D] border-b-2 border-[#14453D] flex items-center gap-2">
             <i data-lucide="package" class="w-4 h-4"></i>
-            <span>Inventaris Barang</span>
+            <span>Inventaris Produk</span>
           </button>
           
-          <button onclick="switchTab('orders')" id="tabBtnOrders" class="py-3 text-xs font-bold uppercase tracking-wider text-zinc-400 hover:text-black border-b-2 border-transparent flex items-center gap-2 transition">
+          <button onclick="switchTab('orders')" id="tabBtnOrders" class="py-3 text-xs font-bold uppercase tracking-wider text-zinc-400 hover:text-[#14453D] border-b-2 border-transparent flex items-center gap-2 transition">
             <i data-lucide="shopping-cart" class="w-4 h-4"></i>
             <span>Pesanan Masuk</span>
-            <span id="tabOrderCount" class="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-zinc-200 text-zinc-700">0</span>
+            <span id="tabOrderCount" class="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-orange-100 text-[#F36926]">0</span>
           </button>
         </div>
       </div>
@@ -122,25 +124,25 @@
         
         <!-- Summary Stats Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="p-5 rounded-xl bg-white border border-zinc-200 shadow-2xs">
+          <div class="p-5 rounded-2xl bg-white border border-zinc-200 shadow-2xs">
             <div class="flex items-center justify-between text-zinc-400 mb-2">
-              <span class="text-xs font-bold uppercase tracking-wider">Total Barang</span>
+              <span class="text-xs font-bold uppercase tracking-wider">Total Produk</span>
               <i data-lucide="package" class="w-4 h-4"></i>
             </div>
-            <div id="statTotalItems" class="text-2xl font-extrabold text-black">0</div>
+            <div id="statTotalItems" class="text-2xl font-extrabold text-[#14453D]">0</div>
             <p class="text-[11px] text-zinc-400 mt-1">Seluruh item katalog</p>
           </div>
 
-          <div class="p-5 rounded-xl bg-white border border-zinc-200 shadow-2xs">
+          <div class="p-5 rounded-2xl bg-white border border-zinc-200 shadow-2xs">
             <div class="flex items-center justify-between text-emerald-600 mb-2">
-              <span class="text-xs font-bold uppercase tracking-wider">Siap Dijual (Ready)</span>
+              <span class="text-xs font-bold uppercase tracking-wider">Ready / Aktif</span>
               <i data-lucide="check-circle" class="w-4 h-4"></i>
             </div>
             <div id="statActiveItems" class="text-2xl font-extrabold text-emerald-700">0</div>
             <p class="text-[11px] text-zinc-400 mt-1">Muncul di toko publik</p>
           </div>
 
-          <div class="p-5 rounded-xl bg-white border border-zinc-200 shadow-2xs">
+          <div class="p-5 rounded-2xl bg-white border border-zinc-200 shadow-2xs">
             <div class="flex items-center justify-between text-red-500 mb-2">
               <span class="text-xs font-bold uppercase tracking-wider">Terjual (Sold)</span>
               <i data-lucide="tag" class="w-4 h-4"></i>
@@ -149,24 +151,24 @@
             <p class="text-[11px] text-zinc-400 mt-1">Unit sudah laku</p>
           </div>
 
-          <div class="p-5 rounded-xl bg-white border border-zinc-200 shadow-2xs">
-            <div class="flex items-center justify-between text-zinc-400 mb-2">
-              <span class="text-xs font-bold uppercase tracking-wider">Total Nilai Inventaris</span>
+          <div class="p-5 rounded-2xl bg-white border border-zinc-200 shadow-2xs">
+            <div class="flex items-center justify-between text-amber-600 mb-2">
+              <span class="text-xs font-bold uppercase tracking-wider">Nilai Total Inventaris</span>
               <i data-lucide="wallet" class="w-4 h-4"></i>
             </div>
-            <div id="statTotalValue" class="text-xl font-extrabold text-black">Rp 0</div>
+            <div id="statTotalValue" class="text-xl font-extrabold text-zinc-900">Rp 0</div>
             <p class="text-[11px] text-zinc-400 mt-1">Akumulasi harga jual barang ready</p>
           </div>
         </div>
 
         <!-- Inventory Table Box -->
-        <div class="bg-white rounded-xl border border-zinc-200 shadow-2xs overflow-hidden">
+        <div class="bg-white rounded-2xl border border-zinc-200 shadow-2xs overflow-hidden">
           
           <!-- Controls Bar -->
           <div class="p-5 border-b border-zinc-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h2 class="text-sm font-bold uppercase tracking-wider text-black">Daftar Inventaris Barang</h2>
-              <p class="text-xs text-zinc-400 mt-0.5">Kelola stok, foto, deskripsi transparansi, dan ubah status terjual.</p>
+              <h2 class="text-sm font-bold uppercase tracking-wider text-[#14453D]">Daftar Inventaris TitipLaku</h2>
+              <p class="text-xs text-zinc-400 mt-0.5">Kelola stok produk UMKM, kurasi barang second, dan ubah status terjual.</p>
             </div>
 
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
@@ -175,24 +177,24 @@
                 <input 
                   type="text" 
                   id="adminSearchInput" 
-                  placeholder="Cari ID, nama, brand..." 
-                  class="w-full pl-9 pr-3 py-1.5 text-xs border border-zinc-200 rounded focus:outline-none focus:border-black"
+                  placeholder="Cari ID, nama, UMKM..." 
+                  class="w-full pl-9 pr-3 py-1.5 text-xs border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D]"
                 >
               </div>
 
-              <select id="adminStatusFilter" class="px-3 py-1.5 text-xs border border-zinc-200 rounded focus:outline-none focus:border-black bg-white text-zinc-700">
+              <select id="adminStatusFilter" class="px-3 py-1.5 text-xs border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D] bg-white text-zinc-700">
                 <option value="all">Semua Status</option>
-                <option value="ready">Hanya Ready (Tersedia)</option>
-                <option value="sold">Hanya Terjual (Sold Out)</option>
+                <option value="ready">Hanya Ready</option>
+                <option value="sold">Hanya Terjual</option>
               </select>
 
-              <select id="adminCatFilter" class="px-3 py-1.5 text-xs border border-zinc-200 rounded focus:outline-none focus:border-black bg-white text-zinc-700">
+              <select id="adminCatFilter" class="px-3 py-1.5 text-xs border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D] bg-white text-zinc-700">
                 <option value="all">Semua Kategori</option>
-                <option value="footwear">Sneakers & Sepatu</option>
+                <option value="kuliner">Kuliner & Camilan</option>
+                <option value="kerajinan">Kerajinan Tangan</option>
                 <option value="clothing">Pakaian & Vintage</option>
+                <option value="footwear">Sepatu & Sneakers</option>
                 <option value="gadgets">Kamera & Gadget</option>
-                <option value="accessories">Jam & Aksesoris</option>
-                <option value="lifestyle">Dekor & Hobi</option>
               </select>
             </div>
           </div>
@@ -202,10 +204,10 @@
             <table class="w-full text-left text-xs text-zinc-700 divide-y divide-zinc-200">
               <thead class="bg-zinc-50 text-zinc-500 uppercase tracking-wider font-bold text-[10px]">
                 <tr>
-                  <th scope="col" class="px-5 py-3">Produk</th>
+                  <th scope="col" class="px-5 py-3">Produk & Asal</th>
                   <th scope="col" class="px-4 py-3">Kategori</th>
                   <th scope="col" class="px-4 py-3">Harga Jual</th>
-                  <th scope="col" class="px-4 py-3">Grade Kondisi</th>
+                  <th scope="col" class="px-4 py-3">Grade</th>
                   <th scope="col" class="px-4 py-3">Status</th>
                   <th scope="col" class="px-4 py-3 text-right">Aksi</th>
                 </tr>
@@ -217,10 +219,10 @@
           </div>
 
           <div id="adminEmptyState" class="hidden py-12 text-center">
-            <p class="text-xs text-zinc-400">Tidak ada barang yang cocok dengan filter.</p>
+            <p class="text-xs text-zinc-400">Tidak ada produk yang cocok dengan filter.</p>
           </div>
 
-          <!-- Reset Helper -->
+          <!-- Footer Helper -->
           <div class="p-4 bg-zinc-50 border-t border-zinc-200 flex items-center justify-between text-xs text-zinc-400">
             <span>Perubahan otomatis sinkron ke toko publik secara instan.</span>
             <button onclick="handleResetData()" class="hover:text-red-600 transition flex items-center gap-1 text-[11px]">
@@ -236,13 +238,13 @@
       <!-- ================= TAB 2: BUYER ORDERS QUEUE ================= -->
       <div id="sectionOrders" class="hidden space-y-6">
         
-        <div class="bg-white rounded-xl border border-zinc-200 shadow-2xs p-5">
+        <div class="bg-white rounded-2xl border border-zinc-200 shadow-2xs p-5 sm:p-6">
           <div class="flex items-center justify-between border-b border-zinc-200 pb-4 mb-4">
             <div>
-              <h2 class="text-sm font-bold uppercase tracking-wider text-black">Antrean Pesanan Masuk (Checkout Pembeli)</h2>
-              <p class="text-xs text-zinc-400 mt-0.5">Daftar checkout yang dilakukan oleh pembeli dari toko titipjualsecond.</p>
+              <h2 class="text-sm font-bold uppercase tracking-wider text-[#14453D]">Antrean Pesanan Masuk (Checkout Pembeli)</h2>
+              <p class="text-xs text-zinc-400 mt-0.5">Daftar pesanan pembeli yang masuk dari toko TitipLaku.</p>
             </div>
-            <span id="ordersTotalBadge" class="text-xs font-bold px-3 py-1 rounded bg-black text-white">0 Pesanan</span>
+            <span id="ordersTotalBadge" class="text-xs font-bold px-3 py-1 rounded-full bg-[#14453D] text-white">0 Pesanan</span>
           </div>
 
           <div id="ordersListContainer" class="space-y-4">
@@ -250,7 +252,7 @@
           </div>
 
           <div id="ordersEmptyState" class="hidden py-16 text-center">
-            <div class="w-14 h-14 rounded-full bg-zinc-100 flex items-center justify-center mx-auto text-zinc-400 mb-2">
+            <div class="w-14 h-14 rounded-full bg-[#EBF5F3] flex items-center justify-center mx-auto text-[#14453D] mb-2">
               <i data-lucide="inbox" class="w-7 h-7"></i>
             </div>
             <h4 class="text-sm font-bold text-zinc-800">Belum Ada Pesanan Masuk</h4>
@@ -268,14 +270,13 @@
   <div id="realtimeOrderModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
     <div class="fixed inset-0 modal-backdrop" onclick="closeOrderPopup()"></div>
     
-    <div class="relative bg-white rounded-2xl max-w-lg w-full p-6 sm:p-7 z-10 shadow-2xl border-2 border-emerald-500 order-popup-animate">
+    <div class="relative bg-white rounded-2xl max-w-lg w-full p-6 sm:p-7 z-10 shadow-2xl border-2 border-[#14453D] order-popup-animate">
       
-      <!-- Top Alert Bar -->
       <div class="flex items-center justify-between pb-3 mb-4 border-b border-zinc-200">
         <div class="flex items-center gap-2">
-          <span class="w-3 h-3 rounded-full bg-emerald-500 animate-ping"></span>
-          <span class="text-xs font-extrabold uppercase tracking-widest text-emerald-700">
-            PESANAN BARU MASUK!
+          <span class="w-3 h-3 rounded-full bg-[#F36926] animate-ping"></span>
+          <span class="text-xs font-extrabold uppercase tracking-widest text-[#14453D]">
+            PESANAN BARU MASUK DARI PEMBELI!
           </span>
         </div>
         <button onclick="closeOrderPopup()" class="p-1 rounded hover:bg-zinc-100 text-zinc-400 hover:text-black">
@@ -283,7 +284,6 @@
         </button>
       </div>
 
-      <!-- Order Details Payload -->
       <div id="orderPopupContent" class="space-y-4">
         <!-- Injected via JavaScript -->
       </div>
@@ -295,17 +295,17 @@
   <div id="productFormModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
     <div class="fixed inset-0 modal-backdrop" onclick="closeFormModal()"></div>
     
-    <div class="relative bg-white rounded-xl max-w-3xl w-full p-6 sm:p-8 z-10 shadow-2xl max-h-[92vh] overflow-y-auto border border-zinc-200">
+    <div class="relative bg-white rounded-2xl max-w-3xl w-full p-6 sm:p-8 z-10 shadow-2xl max-h-[92vh] overflow-y-auto border border-zinc-200">
       <button onclick="closeFormModal()" class="absolute top-5 right-5 p-2 rounded-full hover:bg-zinc-100 text-zinc-400 hover:text-black transition">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
 
       <div class="mb-6">
-        <span id="formBadge" class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
-          INVENTARIS
+        <span id="formBadge" class="text-[10px] font-bold uppercase tracking-wider text-[#14453D] bg-[#EBF5F3] px-2.5 py-0.5 rounded-full">
+          KATALOG TITIPLAKU
         </span>
-        <h3 id="formTitle" class="text-lg font-bold text-black mt-1 uppercase font-brand">Posting Barang Second Baru</h3>
-        <p class="text-xs text-zinc-400 mt-0.5">Lengkapi spesifikasi produk dan kondisi transparansi untuk dipajang di katalog toko.</p>
+        <h3 id="formTitle" class="text-lg font-bold text-[#14453D] mt-1 font-brand">Posting Produk Baru</h3>
+        <p class="text-xs text-zinc-400 mt-0.5">Lengkapi data produk UMKM atau barang titip jual untuk ditampilkan di katalog.</p>
       </div>
 
       <form id="productForm" onsubmit="handleFormSubmit(event)" class="space-y-5 text-xs">
@@ -313,141 +313,113 @@
 
         <!-- Basic Info -->
         <div class="space-y-3">
-          <h4 class="font-bold uppercase tracking-wider text-black border-b border-zinc-200 pb-1">
+          <h4 class="font-bold uppercase tracking-wider text-[#14453D] border-b border-zinc-200 pb-1">
             1. Informasi Dasar Produk
           </h4>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div class="sm:col-span-2">
-              <label class="block font-semibold text-zinc-700 mb-1">Nama Barang *</label>
-              <input type="text" id="inputName" required placeholder="Contoh: Nike Air Jordan 1 Retro High Chicago" class="w-full px-3 py-2 border border-zinc-300 rounded focus:outline-none focus:border-black">
+              <label class="block font-semibold text-zinc-700 mb-1">Nama Produk *</label>
+              <input type="text" id="inputName" required placeholder="Contoh: Kripik Tempe Renyah Oven" class="w-full px-3 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D]">
             </div>
 
             <div>
               <label class="block font-semibold text-zinc-700 mb-1">Brand / Merek *</label>
-              <input type="text" id="inputBrand" required placeholder="Contoh: Nike / Barbour / Olympus" class="w-full px-3 py-2 border border-zinc-300 rounded focus:outline-none focus:border-black">
+              <input type="text" id="inputBrand" required placeholder="Contoh: Dapur Nusantara / Barbour" class="w-full px-3 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D]">
+            </div>
+
+            <div>
+              <label class="block font-semibold text-zinc-700 mb-1">Asal / Lokasi UMKM *</label>
+              <input type="text" id="inputSellerLocation" required placeholder="Contoh: UMKM Bandung / Yogyakarta" class="w-full px-3 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D]">
             </div>
 
             <div>
               <label class="block font-semibold text-zinc-700 mb-1">Kategori *</label>
-              <select id="inputCategory" required class="w-full px-3 py-2 border border-zinc-300 rounded focus:outline-none focus:border-black bg-white">
-                <option value="footwear">Sneakers & Sepatu</option>
+              <select id="inputCategory" required class="w-full px-3 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D] bg-white">
+                <option value="kuliner">Kuliner & Camilan</option>
+                <option value="kerajinan">Kerajinan Tangan</option>
                 <option value="clothing">Pakaian & Vintage</option>
+                <option value="footwear">Sepatu & Sneakers</option>
                 <option value="gadgets">Kamera & Gadget</option>
-                <option value="accessories">Jam & Aksesoris</option>
-                <option value="lifestyle">Dekor & Hobi</option>
               </select>
             </div>
 
             <div>
-              <label class="block font-semibold text-zinc-700 mb-1">Harga Jual Second (Rp) *</label>
-              <input type="number" id="inputPrice" required placeholder="Contoh: 1850000" class="w-full px-3 py-2 border border-zinc-300 rounded focus:outline-none focus:border-black">
+              <label class="block font-semibold text-zinc-700 mb-1">Harga Jual (Rp) *</label>
+              <input type="number" id="inputPrice" required placeholder="Contoh: 35000" class="w-full px-3 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D]">
             </div>
 
             <div>
-              <label class="block font-semibold text-zinc-700 mb-1">Harga Asli Retail Toko (Rp)</label>
-              <input type="number" id="inputOriginalPrice" placeholder="Contoh: 3200000" class="w-full px-3 py-2 border border-zinc-300 rounded focus:outline-none focus:border-black">
+              <label class="block font-semibold text-zinc-700 mb-1">Harga Asli / Normal (Rp)</label>
+              <input type="number" id="inputOriginalPrice" placeholder="Contoh: 50000" class="w-full px-3 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D]">
             </div>
 
             <div>
-              <label class="block font-semibold text-zinc-700 mb-1">Ukuran / Varian</label>
-              <input type="text" id="inputSize" placeholder="Contoh: EU 42 / Size L / Body Only" class="w-full px-3 py-2 border border-zinc-300 rounded focus:outline-none focus:border-black">
+              <label class="block font-semibold text-zinc-700 mb-1">Ukuran / Varian / Kemasan</label>
+              <input type="text" id="inputSize" placeholder="Contoh: Pouch 250gr / Size L / EU 42" class="w-full px-3 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D]">
             </div>
 
             <div>
               <label class="block font-semibold text-zinc-700 mb-1">Status Ketersediaan</label>
-              <select id="inputStatus" class="w-full px-3 py-2 border border-zinc-300 rounded focus:outline-none focus:border-black bg-white">
+              <select id="inputStatus" class="w-full px-3 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D] bg-white">
                 <option value="true">Tersedia (Ready Stock)</option>
-                <option value="false">Sudah Terjual (Sold Out)</option>
+                <option value="false">Habis / Sudah Terjual</option>
               </select>
-            </div>
-          </div>
-        </div>
-
-        <!-- Grade Kondisi -->
-        <div class="space-y-3">
-          <h4 class="font-bold uppercase tracking-wider text-black border-b border-zinc-200 pb-1">
-            2. Grade Kondisi
-          </h4>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label class="block font-semibold text-zinc-700 mb-1">Tingkat Grade</label>
-              <select id="inputGrade" class="w-full px-3 py-2 border border-zinc-300 rounded focus:outline-none focus:border-black bg-white">
-                <option value="Grade S">Grade S — Like New / Mint (98-100%)</option>
-                <option value="Grade A" selected>Grade A — Sangat Mulus (90-97%)</option>
-                <option value="Grade B">Grade B — Authentic Vintage (80-89%)</option>
-              </select>
-            </div>
-            <div>
-              <label class="block font-semibold text-zinc-700 mb-1">Skor Persentase</label>
-              <input type="text" id="inputGradeScore" placeholder="Contoh: 96%" class="w-full px-3 py-2 border border-zinc-300 rounded focus:outline-none focus:border-black">
             </div>
           </div>
         </div>
 
         <!-- Foto -->
         <div class="space-y-3">
-          <h4 class="font-bold uppercase tracking-wider text-black border-b border-zinc-200 pb-1">
-            3. Foto Barang
+          <h4 class="font-bold uppercase tracking-wider text-[#14453D] border-b border-zinc-200 pb-1">
+            2. Foto Produk
           </h4>
           <div class="space-y-2">
             <div>
               <label class="block font-semibold text-zinc-700 mb-1">URL Gambar Online</label>
-              <input type="url" id="inputImageUrl" oninput="updateImagePreview(this.value)" placeholder="https://images.unsplash.com/..." class="w-full px-3 py-2 border border-zinc-300 rounded focus:outline-none focus:border-black">
+              <input type="url" id="inputImageUrl" oninput="updateImagePreview(this.value)" placeholder="https://images.unsplash.com/..." class="w-full px-3 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D]">
             </div>
             <div>
               <label class="block font-semibold text-zinc-700 mb-1">Atau Upload Foto dari Komputer</label>
-              <input type="file" id="inputFileUpload" accept="image/*" onchange="handleFileUpload(event)" class="w-full text-xs file:mr-2 file:py-1 file:px-2.5 file:rounded file:border-0 file:bg-zinc-100 file:text-zinc-700 hover:file:bg-zinc-200 cursor-pointer">
+              <input type="file" id="inputFileUpload" accept="image/*" onchange="handleFileUpload(event)" class="w-full text-xs file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:bg-emerald-50 file:text-[#14453D] hover:file:bg-emerald-100 cursor-pointer">
             </div>
             <div class="flex items-center gap-3 pt-2">
-              <div class="w-20 h-24 rounded border border-zinc-200 overflow-hidden bg-zinc-100 shrink-0">
-                <img id="imagePreview" src="https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=300&auto=format&fit=crop" class="w-full h-full object-cover">
+              <div class="w-20 h-20 rounded-xl border border-zinc-200 overflow-hidden bg-zinc-100 shrink-0">
+                <img id="imagePreview" src="https://images.unsplash.com/photo-1566478989037-eec170784d0b?q=80&w=300&auto=format&fit=crop" class="w-full h-full object-cover">
               </div>
-              <p class="text-[11px] text-zinc-400">Preview foto vertikal (3:4) sesuai tampilan Zalora.</p>
+              <p class="text-[11px] text-zinc-400">Preview foto produk TitipLaku.</p>
             </div>
           </div>
         </div>
 
         <!-- Transparansi -->
         <div class="space-y-3">
-          <h4 class="font-bold uppercase tracking-wider text-black border-b border-zinc-200 pb-1">
-            4. Laporan Transparansi Kondisi (Jujur & Lengkap)
+          <h4 class="font-bold uppercase tracking-wider text-[#14453D] border-b border-zinc-200 pb-1">
+            3. Jaminan Mutu & Transparansi
           </h4>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label class="block font-semibold text-zinc-700 mb-1">Kondisi Fisik Bodi</label>
-              <input type="text" id="inputPhysical" placeholder="9.5/10 - Mulus tanpa cacat" class="w-full px-3 py-2 border border-zinc-300 rounded focus:outline-none focus:border-black">
+              <label class="block font-semibold text-zinc-700 mb-1">Kondisi Fisik / Kemasan</label>
+              <input type="text" id="inputPhysical" placeholder="Kemasan ziplock higienis rapat" class="w-full px-3 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D]">
             </div>
             <div>
-              <label class="block font-semibold text-zinc-700 mb-1">Kondisi Fungsi</label>
-              <input type="text" id="inputFunction" placeholder="100% Berfungsi normal" class="w-full px-3 py-2 border border-zinc-300 rounded focus:outline-none focus:border-black">
-            </div>
-            <div>
-              <label class="block font-semibold text-zinc-700 mb-1">Kelengkapan</label>
-              <input type="text" id="inputCompleteness" placeholder="Box original, tali cadangan" class="w-full px-3 py-2 border border-zinc-300 rounded focus:outline-none focus:border-black">
-            </div>
-            <div>
-              <label class="block font-semibold text-zinc-700 mb-1">Minus / Defect (Wajib Jujur)</label>
-              <input type="text" id="inputDefect" placeholder="Creasing wajar / Tidak ada minus" class="w-full px-3 py-2 border border-zinc-300 rounded focus:outline-none focus:border-black">
-            </div>
-            <div class="sm:col-span-2">
-              <label class="block font-semibold text-zinc-700 mb-1">Histori Asal Barang</label>
-              <input type="text" id="inputOrigin" placeholder="Koleksi pribadi fotografer / Beli di store resmi" class="w-full px-3 py-2 border border-zinc-300 rounded focus:outline-none focus:border-black">
+              <label class="block font-semibold text-zinc-700 mb-1">Fungsi / Kelayakan</label>
+              <input type="text" id="inputFunction" placeholder="Masa simpan 6 bulan / Fungsi normal" class="w-full px-3 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D]">
             </div>
             <div class="sm:col-span-2">
               <label class="block font-semibold text-zinc-700 mb-1">Deskripsi Singkat</label>
-              <textarea id="inputDescription" rows="2" placeholder="Ceritakan detail keistimewaan barang..." class="w-full px-3 py-2 border border-zinc-300 rounded focus:outline-none focus:border-black"></textarea>
+              <textarea id="inputDescription" rows="2" placeholder="Ceritakan rasa, bahan, keistimewaan produk..." class="w-full px-3 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:border-[#14453D]"></textarea>
             </div>
           </div>
         </div>
 
         <!-- Submit -->
         <div class="pt-4 border-t border-zinc-200 flex items-center justify-end gap-2">
-          <button type="button" onclick="closeFormModal()" class="px-4 py-2 border border-zinc-300 rounded font-bold hover:bg-zinc-50">
+          <button type="button" onclick="closeFormModal()" class="px-4 py-2 border border-zinc-300 rounded-lg font-bold hover:bg-zinc-50">
             Batal
           </button>
-          <button type="submit" class="px-5 py-2 bg-black text-white rounded font-bold hover:bg-zinc-800">
-            <span id="submitBtnText">Simpan & Posting Barang</span>
+          <button type="submit" class="px-5 py-2 bg-[#14453D] hover:bg-[#0D332D] text-white rounded-lg font-bold">
+            <span id="submitBtnText">Simpan & Posting Produk</span>
           </button>
         </div>
 
@@ -457,7 +429,7 @@
 
   <!-- Toast -->
   <div id="adminToast" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 hidden">
-    <div class="bg-black text-white text-xs py-3 px-5 rounded-full shadow-2xl flex items-center gap-2 border border-zinc-700">
+    <div class="bg-[#14453D] text-white text-xs py-3 px-5 rounded-full shadow-2xl flex items-center gap-2 border border-emerald-700">
       <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
       <span id="adminToastMessage">Pemberitahuan</span>
     </div>

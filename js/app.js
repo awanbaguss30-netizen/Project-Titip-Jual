@@ -1,27 +1,19 @@
 /**
- * titipjualsecond - Zalora E-Commerce Storefront Engine
+ * TitipLaku - Modern Indonesian UMKM & Consignment Engine
  */
 
 const state = {
   products: [],
   filteredProducts: [],
-  cart: JSON.parse(localStorage.getItem('tjs_cart') || '[]'),
-  wishlist: JSON.parse(localStorage.getItem('tjs_wishlist') || '[]'),
+  cart: JSON.parse(localStorage.getItem('titiplaku_cart') || '[]'),
+  wishlist: JSON.parse(localStorage.getItem('titiplaku_wishlist') || '[]'),
   
-  // Filters
-  department: 'all',
-  selectedBrands: [],
-  selectedGrades: [],
-  selectedSize: null,
-  priceRange: 'all',
+  category: 'all',
   searchQuery: '',
-  brandQuery: '',
-  sortBy: 'default',
-  
   selectedProduct: null
 };
 
-// Currency Formatter
+// Formatter Rupiah
 function formatRupiah(amount) {
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
@@ -46,225 +38,84 @@ function showToast(message) {
   }, 2800);
 }
 
-// Load Products
+// Load Storefront
 function loadStorefront() {
   state.products = Store.getAll();
-  renderBrandList();
   applyFilters();
   updateCartBadge();
   updateWishlistBadge();
 }
 
-// Render Brand Checkbox List
-function renderBrandList() {
-  const container = document.getElementById('brandListContainer');
-  if (!container) return;
-
-  // Extract unique brands with counts
-  const brandCounts = {};
-  state.products.forEach(p => {
-    const b = p.brand || 'Lainnya';
-    brandCounts[b] = (brandCounts[b] || 0) + 1;
-  });
-
-  const brands = Object.keys(brandCounts).sort();
-  const query = state.brandQuery.toLowerCase().trim();
-  const filteredBrands = query ? brands.filter(b => b.toLowerCase().includes(query)) : brands;
-
-  if (filteredBrands.length === 0) {
-    container.innerHTML = '<p class="text-zinc-400 text-[11px] italic">Brand tidak ditemukan.</p>';
-    return;
-  }
-
-  container.innerHTML = filteredBrands.map(b => {
-    const checked = state.selectedBrands.includes(b) ? 'checked' : '';
-    return `
-      <label class="flex items-center justify-between cursor-pointer hover:text-black py-0.5">
-        <div class="flex items-center gap-2">
-          <input type="checkbox" value="${b}" ${checked} onchange="toggleBrandFilter('${b}')" class="rounded text-black focus:ring-0">
-          <span class="text-xs">${b}</span>
-        </div>
-        <span class="text-[10px] text-zinc-400">(${brandCounts[b]})</span>
-      </label>
-    `;
-  }).join('');
-}
-
-function toggleBrandFilter(brand) {
-  const idx = state.selectedBrands.indexOf(brand);
-  if (idx === -1) {
-    state.selectedBrands.push(brand);
-  } else {
-    state.selectedBrands.splice(idx, 1);
-  }
-  applyFilters();
-}
-
-// Department Sub-nav
-function setDepartment(dept) {
-  state.department = dept;
-  document.querySelectorAll('.dept-nav-link').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.dept === dept);
+// Category Filter
+function setCategoryFilter(cat) {
+  state.category = cat;
+  document.querySelectorAll('.cat-pill').forEach(btn => {
+    const isAct = btn.dataset.cat === cat;
+    btn.classList.toggle('active', isAct);
+    btn.classList.toggle('bg-[#14453D]', isAct);
+    btn.classList.toggle('text-white', isAct);
+    btn.classList.toggle('bg-white', !isAct);
+    btn.classList.toggle('text-zinc-700', !isAct);
   });
 
   const titles = {
-    'all': 'Koleksi Barang Second Pilihan',
-    'wanita': 'Koleksi Second Wanita',
-    'pria': 'Koleksi Second Pria',
-    'footwear': 'Sneakers & Sepatu Second Terkurasi',
-    'clothing': 'Pakaian & Vintage Jackets',
-    'gadgets': 'Kamera Analog & Audio Studio',
-    'accessories': 'Jam Tangan & Luxury Archive'
+    'all': 'Produk UMKM & Titip Jual Terbaru',
+    'kuliner': 'Kuliner & Camilan UMKM Tradisional',
+    'kerajinan': 'Kerajinan Tangan Anyaman Lokal',
+    'clothing': 'Pakaian & Fashion Vintage',
+    'footwear': 'Sepatu & Sneakers Pilihan',
+    'gadgets': 'Kamera Analog & Gadget Pilihan'
   };
 
-  const elTitle = document.getElementById('catalogHeaderTitle');
-  const elBreadcrumb = document.getElementById('breadcrumbCategory');
-  if (elTitle) elTitle.textContent = titles[dept] || 'Katalog Terkurasi';
-  if (elBreadcrumb) elBreadcrumb.textContent = titles[dept] || 'Koleksi';
+  const headerTitle = document.getElementById('catalogHeaderTitle');
+  if (headerTitle) headerTitle.textContent = titles[cat] || 'Koleksi TitipLaku';
 
   applyFilters();
 }
 
-// Size Pill Toggle
-function toggleSizeFilter(btn, size) {
-  const allBtns = document.querySelectorAll('.size-btn');
-  if (state.selectedSize === size) {
-    state.selectedSize = null;
-    btn.classList.remove('bg-black', 'text-white', 'border-black');
-    btn.classList.add('border-zinc-200', 'text-zinc-700');
-  } else {
-    allBtns.forEach(b => {
-      b.classList.remove('bg-black', 'text-white', 'border-black');
-      b.classList.add('border-zinc-200', 'text-zinc-700');
-    });
-    state.selectedSize = size;
-    btn.classList.remove('border-zinc-200', 'text-zinc-700');
-    btn.classList.add('bg-black', 'text-white', 'border-black');
-  }
-  applyFilters();
-}
-
-// Reset All Filters
-function resetAllFilters() {
-  state.department = 'all';
-  state.selectedBrands = [];
-  state.selectedGrades = [];
-  state.selectedSize = null;
-  state.priceRange = 'all';
-  state.searchQuery = '';
-  state.brandQuery = '';
-  state.sortBy = 'default';
-
-  // reset DOM
-  const searchInput = document.getElementById('searchInput');
-  const brandSearch = document.getElementById('brandSearchInput');
-  const sortSelect = document.getElementById('sortSelect');
-  if (searchInput) searchInput.value = '';
-  if (brandSearch) brandSearch.value = '';
-  if (sortSelect) sortSelect.value = 'default';
-
-  document.querySelectorAll('input[name="gradeFilter"]').forEach(cb => cb.checked = false);
-  document.querySelectorAll('input[name="priceRange"]').forEach(r => r.checked = (r.value === 'all'));
-  document.querySelectorAll('.size-btn').forEach(b => {
-    b.classList.remove('bg-black', 'text-white', 'border-black');
-    b.classList.add('border-zinc-200', 'text-zinc-700');
-  });
-  document.querySelectorAll('.dept-nav-link').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.dept === 'all');
-  });
-
-  renderBrandList();
-  applyFilters();
-}
-
-// Apply Filters
+// Search & Filter
 function applyFilters() {
   let list = [...state.products];
 
-  // 1. Department Filter
-  if (state.department !== 'all') {
-    if (state.department === 'wanita' || state.department === 'pria') {
-      list = list.filter(p => p.gender === state.department || p.gender === 'unisex');
-    } else {
-      list = list.filter(p => p.category === state.department);
-    }
+  // Category
+  if (state.category !== 'all') {
+    list = list.filter(p => p.category === state.category);
   }
 
-  // 2. Brand Filter
-  if (state.selectedBrands.length > 0) {
-    list = list.filter(p => state.selectedBrands.includes(p.brand));
-  }
-
-  // 3. Grade Filter
-  const checkedGrades = Array.from(document.querySelectorAll('input[name="gradeFilter"]:checked')).map(cb => cb.value);
-  if (checkedGrades.length > 0) {
-    list = list.filter(p => checkedGrades.includes(p.grade));
-  }
-
-  // 4. Size Filter
-  if (state.selectedSize) {
-    const s = state.selectedSize.toLowerCase();
-    list = list.filter(p => (p.size || '').toLowerCase().includes(s));
-  }
-
-  // 5. Price Range Filter
-  const checkedPrice = document.querySelector('input[name="priceRange"]:checked');
-  const priceVal = checkedPrice ? checkedPrice.value : 'all';
-  if (priceVal === 'under-2m') {
-    list = list.filter(p => p.price < 2000000);
-  } else if (priceVal === '2m-4m') {
-    list = list.filter(p => p.price >= 2000000 && p.price <= 4000000);
-  } else if (priceVal === 'above-4m') {
-    list = list.filter(p => p.price > 4000000);
-  }
-
-  // 6. Search Input
+  // Search
   const q = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
   if (q) {
     list = list.filter(p => 
       p.name.toLowerCase().includes(q) ||
       p.brand.toLowerCase().includes(q) ||
+      (p.sellerLocation || '').toLowerCase().includes(q) ||
       p.categoryLabel.toLowerCase().includes(q) ||
       p.description.toLowerCase().includes(q)
     );
-  }
-
-  // 7. Sorting
-  const sort = document.getElementById('sortSelect')?.value || 'default';
-  if (sort === 'price-low') {
-    list.sort((a, b) => a.price - b.price);
-  } else if (sort === 'price-high') {
-    list.sort((a, b) => b.price - a.price);
-  } else if (sort === 'discount') {
-    list.sort((a, b) => {
-      const discA = (a.originalPrice - a.price) / a.originalPrice;
-      const discB = (b.originalPrice - b.price) / b.originalPrice;
-      return discB - discA;
-    });
   }
 
   state.filteredProducts = list;
   renderProducts();
 }
 
-// Render Zalora Style Product Cards
+// Render Products Matching the Laptop & Phone Mockups
 function renderProducts() {
   const container = document.getElementById('productGrid');
   const countEl = document.getElementById('productCount');
   if (!container) return;
 
   if (countEl) {
-    countEl.textContent = `${state.filteredProducts.length} Barang ditemukan`;
+    countEl.textContent = `Menampilkan ${state.filteredProducts.length} produk titip pilihan`;
   }
 
   if (state.filteredProducts.length === 0) {
     container.innerHTML = `
       <div class="col-span-full py-16 text-center">
         <i data-lucide="package-search" class="w-12 h-12 mx-auto text-zinc-300 mb-2"></i>
-        <h4 class="text-sm font-bold text-black mb-1">Barang tidak ditemukan</h4>
-        <p class="text-xs text-zinc-400 mb-4">Coba sesuaikan filter brand, ukuran, atau reset filter Anda.</p>
-        <button onclick="resetAllFilters()" class="text-xs font-bold px-4 py-2 bg-black text-white rounded">
-          Reset Filter
+        <h4 class="text-sm font-bold text-zinc-800 mb-1">Produk tidak ditemukan</h4>
+        <p class="text-xs text-zinc-400 mb-4">Coba cari dengan kata kunci lain atau pilih semua kategori.</p>
+        <button onclick="setCategoryFilter('all')" class="text-xs font-bold px-4 py-2 bg-[#14453D] text-white rounded-full">
+          Lihat Semua Produk
         </button>
       </div>
     `;
@@ -274,85 +125,90 @@ function renderProducts() {
 
   container.innerHTML = state.filteredProducts.map(p => {
     const isWishlisted = state.wishlist.includes(p.id);
-    const discount = p.originalPrice > p.price ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100) : 0;
     const isSold = !p.isAvailable;
-    const gradeClass = p.grade === 'Grade S' ? 'badge-grade-s' : p.grade === 'Grade A' ? 'badge-grade-a' : 'badge-grade-b';
+    const location = p.sellerLocation || 'UMKM Indonesia';
+    const rating = p.rating || 5.0;
+    const reviewCount = p.reviewCount || 45;
 
     return `
-      <div class="zalora-card bg-white border border-zinc-200/80 rounded overflow-hidden flex flex-col group cursor-pointer" onclick="openProductModal('${p.id}')">
+      <div class="titiplaku-card bg-white border border-zinc-200 shadow-xs flex flex-col group cursor-pointer" onclick="openProductModal('${p.id}')">
         
-        <!-- Image Container (Tall 3:4 Fashion Crop) -->
-        <div class="zalora-card-img-wrap">
+        <!-- Image Container with Heart Button -->
+        <div class="titiplaku-card-img-wrap">
           <img src="${p.images[0]}" alt="${p.name}" class="w-full h-full object-cover ${isSold ? 'grayscale-[40%]' : ''}">
           
-          <!-- Rating & Grade Badge Top Left (Zalora Style) -->
-          <div class="absolute top-2.5 left-2.5 flex flex-col gap-1 items-start z-10">
-            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-white/95 text-zinc-800 shadow-2xs backdrop-blur-xs">
-              <span class="text-amber-500">★</span> 5.0 • ${p.grade}
-            </span>
+          <!-- Top Left Tag -->
+          <div class="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1 items-start">
             ${isSold ? `
-              <span class="px-2 py-0.5 rounded text-[10px] font-extrabold bg-red-600 text-white uppercase shadow-xs">
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-red-600 text-white shadow-xs">
                 TERJUAL
               </span>
             ` : `
-              <span class="px-2 py-0.5 rounded text-[9px] font-bold ${gradeClass} shadow-2xs">
-                ${p.gradeScore}
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#14453D] text-white shadow-xs flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                Bisa Titip
               </span>
             `}
           </div>
 
-          <!-- Wishlist Heart Button Top Right -->
+          <!-- Top Right Heart Button -->
           <button 
             onclick="event.stopPropagation(); toggleWishlist('${p.id}')"
-            class="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/90 backdrop-blur-xs flex items-center justify-center text-zinc-700 hover:text-red-500 hover:bg-white shadow-xs transition z-10"
-            title="Simpan ke Wishlist"
+            class="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/95 backdrop-blur-xs flex items-center justify-center text-zinc-600 hover:text-red-500 shadow-sm transition z-10"
+            title="Simpan Produk"
           >
             <i data-lucide="heart" class="w-4 h-4 ${isWishlisted ? 'fill-red-500 text-red-500' : ''}"></i>
           </button>
-
-          <!-- Hover "Temukan yang Serupa" / Quick View Button in Center -->
-          <div class="absolute inset-x-4 bottom-4 z-10 quick-view-hover">
-            <button class="w-full py-2 bg-white/95 backdrop-blur-xs text-black text-xs font-bold uppercase tracking-wider rounded shadow-md hover:bg-black hover:text-white transition">
-              Lihat Rincian
-            </button>
-          </div>
-
-          <!-- Bottom Single Item Tag -->
-          ${!isSold ? `
-            <div class="absolute bottom-2 left-2.5 z-10 bg-white/90 px-2 py-0.5 rounded text-[9px] font-medium text-zinc-600 flex items-center gap-1">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 1 Unit Saja
-            </div>
-          ` : ''}
         </div>
 
-        <!-- Card Content Info -->
-        <div class="p-3.5 flex-1 flex flex-col justify-between">
+        <!-- Card Content -->
+        <div class="p-3.5 sm:p-4 flex-1 flex flex-col justify-between">
           <div>
-            <!-- Brand in Bold Uppercase -->
-            <div class="text-[11px] font-extrabold text-black uppercase tracking-wider mb-0.5">
-              ${p.brand}
+            <!-- Seller Location Badge (Matching Mockup: 📍 UMKM Bandung / Yogya) -->
+            <div class="flex items-center gap-1 text-[11px] font-semibold text-[#14453D] mb-1">
+              <i data-lucide="map-pin" class="w-3 h-3 text-[#F36926]"></i>
+              <span class="line-clamp-1">${location}</span>
             </div>
 
             <!-- Product Title -->
-            <h3 class="text-xs text-zinc-800 line-clamp-1 group-hover:text-black transition">
+            <h3 class="text-xs sm:text-sm font-bold text-zinc-900 line-clamp-2 group-hover:text-[#F36926] transition leading-snug">
               ${p.name}
             </h3>
 
-            <!-- Size / Subtitle -->
-            <p class="text-[11px] text-zinc-400 mt-0.5">
-              ${p.size || 'All Size'} • ${p.categoryLabel}
-            </p>
+            <!-- Stars & Rating (Matching Mockup) -->
+            <div class="flex items-center gap-1 mt-1.5 text-[11px] text-amber-500">
+              <span class="font-bold">★ ${rating.toFixed(1)}</span>
+              <span class="text-zinc-400 text-[10px]">(${reviewCount})</span>
+              <span class="text-zinc-300">•</span>
+              <span class="text-zinc-500 text-[10px]">${p.categoryLabel}</span>
+            </div>
           </div>
 
-          <!-- Price Row -->
-          <div class="pt-2.5 mt-2 border-t border-zinc-100">
-            <div class="flex items-baseline gap-2 flex-wrap">
-              <span class="text-sm font-extrabold text-black">${formatRupiah(p.price)}</span>
+          <!-- Price & Beli Button Row -->
+          <div class="pt-3 mt-2 border-t border-zinc-100 flex items-center justify-between">
+            <div>
+              <span class="text-xs sm:text-sm font-extrabold text-[#14453D] block">
+                ${formatRupiah(p.price)}
+              </span>
               ${p.originalPrice > p.price ? `
-                <span class="text-[11px] text-zinc-400 line-through">${formatRupiah(p.originalPrice)}</span>
-                <span class="text-[10px] font-bold text-red-600">${discount}% OFF</span>
+                <span class="text-[10px] text-zinc-400 line-through">${formatRupiah(p.originalPrice)}</span>
               ` : ''}
             </div>
+
+            <!-- Action Button -->
+            ${isSold ? `
+              <span class="px-3 py-1 bg-zinc-100 text-zinc-400 font-bold text-xs rounded-full cursor-not-allowed">
+                Habis
+              </span>
+            ` : `
+              <button 
+                onclick="event.stopPropagation(); addToCart('${p.id}')"
+                class="px-3 py-1.5 bg-[#14453D] hover:bg-[#F36926] text-white font-bold text-xs rounded-full transition shadow-2xs flex items-center gap-1"
+              >
+                <span>Beli</span>
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+              </button>
+            `}
           </div>
 
         </div>
@@ -370,12 +226,12 @@ function toggleWishlist(productId) {
   const product = state.products.find(p => p.id === productId);
   if (index === -1) {
     state.wishlist.push(productId);
-    showToast(`"${product.name.substring(0, 20)}..." disimpan ke Wishlist`);
+    showToast(`"${product.name.substring(0, 20)}..." disimpan`);
   } else {
     state.wishlist.splice(index, 1);
-    showToast(`Dihapus dari Wishlist`);
+    showToast(`Dihapus dari simpanan`);
   }
-  localStorage.setItem('tjs_wishlist', JSON.stringify(state.wishlist));
+  localStorage.setItem('titiplaku_wishlist', JSON.stringify(state.wishlist));
   updateWishlistBadge();
   renderProducts();
 }
@@ -389,46 +245,46 @@ function updateWishlistBadge() {
   }
 }
 
-// Cart Management
+// Cart Operations
 function addToCart(productId) {
   const product = state.products.find(p => p.id === productId);
   if (!product) return;
 
   if (!product.isAvailable) {
-    showToast('Maaf, barang ini sudah Terjual (Sold Out).');
+    showToast('Maaf, produk ini sedang kosong/terjual.');
     return;
   }
 
-  const exists = state.cart.find(i => i.id === productId);
-  if (exists) {
-    showToast('Barang ini sudah ada di kantong belanja Anda (stok hanya 1 unit).');
-    openCartDrawer();
-    return;
+  const existing = state.cart.find(i => i.id === productId);
+  if (existing) {
+    existing.qty = (existing.qty || 1) + 1;
+    showToast(`Jumlah ${product.name.substring(0, 20)} ditambah`);
+  } else {
+    state.cart.push({
+      id: product.id,
+      name: product.name,
+      brand: product.brand,
+      price: product.price,
+      image: product.images[0],
+      grade: product.grade,
+      size: product.size,
+      qty: 1
+    });
+    showToast('Produk dimasukkan ke keranjang');
   }
-
-  state.cart.push({
-    id: product.id,
-    name: product.name,
-    brand: product.brand,
-    price: product.price,
-    image: product.images[0],
-    grade: product.grade,
-    size: product.size
-  });
 
   saveCart();
-  showToast('Ditambahkan ke kantong belanja');
   openCartDrawer();
 }
 
 function removeFromCart(productId) {
   state.cart = state.cart.filter(i => i.id !== productId);
   saveCart();
-  showToast('Barang dihapus dari kantong belanja');
+  showToast('Produk dihapus dari keranjang');
 }
 
 function saveCart() {
-  localStorage.setItem('tjs_cart', JSON.stringify(state.cart));
+  localStorage.setItem('titiplaku_cart', JSON.stringify(state.cart));
   updateCartBadge();
   renderCart();
 }
@@ -436,7 +292,7 @@ function saveCart() {
 function updateCartBadge() {
   const badge = document.getElementById('cartCountBadge');
   if (badge) {
-    const c = state.cart.length;
+    const c = state.cart.reduce((sum, it) => sum + (it.qty || 1), 0);
     badge.textContent = c;
     badge.classList.toggle('hidden', c === 0);
   }
@@ -472,17 +328,17 @@ function renderCart() {
 
   let subtotal = 0;
   container.innerHTML = state.cart.map(item => {
-    subtotal += item.price;
+    const itemTotal = item.price * (item.qty || 1);
+    subtotal += itemTotal;
     return `
-      <div class="flex gap-4 py-4 items-start">
-        <img src="${item.image}" alt="${item.name}" class="w-20 h-24 object-cover rounded border border-zinc-200 shrink-0">
+      <div class="flex gap-3 py-3.5 items-start">
+        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-xl border border-zinc-200 shrink-0">
         <div class="flex-1 min-w-0">
-          <span class="text-[10px] font-bold uppercase text-black block">${item.brand || 'TITIPJUALSECOND'}</span>
-          <h4 class="text-xs font-semibold text-zinc-900 line-clamp-1">${item.name}</h4>
-          <p class="text-[11px] text-zinc-500 mt-0.5">${item.size || 'Standar'} • ${item.grade}</p>
-          <div class="flex items-center justify-between mt-3">
-            <span class="text-xs font-extrabold text-black">${formatRupiah(item.price)}</span>
-            <button onclick="removeFromCart('${item.id}')" class="text-xs text-red-500 hover:text-red-700 font-medium">
+          <h4 class="text-xs font-bold text-zinc-900 line-clamp-1">${item.name}</h4>
+          <p class="text-[11px] text-zinc-500 mt-0.5">${item.size || 'Standar'} • ${item.qty || 1}x</p>
+          <div class="flex items-center justify-between mt-2">
+            <span class="text-xs font-extrabold text-[#14453D]">${formatRupiah(itemTotal)}</span>
+            <button onclick="removeFromCart('${item.id}')" class="text-[11px] text-red-500 hover:text-red-700 font-semibold">
               Hapus
             </button>
           </div>
@@ -502,90 +358,84 @@ function openProductModal(productId) {
 
   const discount = p.originalPrice > p.price ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100) : 0;
   const isSold = !p.isAvailable;
-  const gradeClass = p.grade === 'Grade S' ? 'badge-grade-s' : p.grade === 'Grade A' ? 'badge-grade-a' : 'badge-grade-b';
 
   document.getElementById('productModalContent').innerHTML = `
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
       <!-- Image Gallery -->
       <div>
-        <div class="aspect-[3/4] bg-zinc-100 rounded overflow-hidden border border-zinc-200 relative mb-3">
-          <img id="modalMainImg" src="${p.images[0]}" class="w-full h-full object-cover ${isSold ? 'grayscale-[35%]' : ''}">
+        <div class="aspect-square bg-zinc-100 rounded-2xl overflow-hidden border border-zinc-200 relative mb-3">
+          <img id="modalMainImg" src="${p.images[0]}" class="w-full h-full object-cover ${isSold ? 'grayscale-[30%]' : ''}">
           ${isSold ? `
             <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-              <span class="px-4 py-2 bg-red-600 text-white font-extrabold text-xs uppercase tracking-widest rounded shadow-lg">
+              <span class="px-4 py-2 bg-red-600 text-white font-extrabold text-xs uppercase tracking-widest rounded-lg shadow-lg">
                 BARANG INI SUDAH TERJUAL
               </span>
             </div>
           ` : ''}
         </div>
-        ${p.images.length > 1 ? `
-          <div class="flex gap-2">
-            ${p.images.map(img => `
-              <button onclick="document.getElementById('modalMainImg').src='${img}'" class="w-16 h-20 rounded overflow-hidden border border-zinc-200 hover:border-black shrink-0">
-                <img src="${img}" class="w-full h-full object-cover">
-              </button>
-            `).join('')}
-          </div>
-        ` : ''}
       </div>
 
-      <!-- Detail Info & Transparency -->
+      <!-- Detail Info -->
       <div class="flex flex-col justify-between h-full">
         <div>
-          <div class="text-xs font-extrabold text-black uppercase tracking-wider mb-1">${p.brand}</div>
-          <h2 class="text-xl font-bold text-black mb-2">${p.name}</h2>
+          <div class="flex items-center gap-1.5 text-xs font-bold text-[#14453D] mb-1">
+            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-[#F36926]"></i>
+            <span>${p.sellerLocation || 'UMKM Indonesia'}</span>
+            <span class="text-zinc-300">•</span>
+            <span class="text-zinc-500">${p.categoryLabel}</span>
+          </div>
+
+          <h2 class="text-xl font-extrabold text-zinc-900 mb-2 font-brand">${p.name}</h2>
           
           <div class="flex items-center gap-2 mb-4">
-            <span class="px-2.5 py-0.5 rounded text-[10px] font-bold ${gradeClass}">
-              ${p.grade} • ${p.gradeScore} (${p.gradeBadge})
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#EBF5F3] text-[#14453D]">
+              ★ ${p.rating || 5.0} (${p.reviewCount || 45} Ulasan)
             </span>
             <span class="text-xs text-zinc-400">Kode: ${p.id}</span>
           </div>
 
           <!-- Price -->
-          <div class="flex items-baseline gap-3 pb-4 mb-4 border-b border-zinc-200">
-            <span class="text-2xl font-extrabold text-black">${formatRupiah(p.price)}</span>
+          <div class="flex items-baseline gap-3 pb-4 mb-4 border-b border-zinc-100">
+            <span class="text-2xl font-extrabold text-[#14453D]">${formatRupiah(p.price)}</span>
             ${p.originalPrice > p.price ? `
               <span class="text-sm text-zinc-400 line-through">${formatRupiah(p.originalPrice)}</span>
-              <span class="text-xs font-bold text-red-600">Hemat ${discount}%</span>
+              <span class="text-xs font-bold text-[#F36926]">Diskon ${discount}%</span>
             ` : ''}
           </div>
 
-          <p class="text-xs text-zinc-600 leading-relaxed mb-6">${p.description}</p>
+          <p class="text-xs text-zinc-600 leading-relaxed mb-4">${p.description}</p>
 
-          <!-- Transparent Checklist -->
-          <div class="bg-zinc-50 border border-zinc-200 rounded p-4 mb-6 space-y-2.5">
-            <h4 class="text-xs font-extrabold uppercase tracking-wider text-black flex items-center gap-1.5">
+          <!-- Transparency Report -->
+          <div class="bg-zinc-50 border border-zinc-200/80 rounded-xl p-3.5 mb-5 space-y-2 text-xs">
+            <h4 class="font-bold text-[#14453D] flex items-center gap-1.5 text-[11px] uppercase tracking-wider">
               <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
-              Laporan Transparansi Kondisi (Authentic Check)
+              Jaminan Mutu & Transparansi TitipLaku
             </h4>
-            <div class="text-xs space-y-1.5 pt-1">
-              <div class="flex justify-between"><span class="text-zinc-500">Fisik Bodi:</span><span class="font-medium text-zinc-900">${p.conditionDetails.physical}</span></div>
-              <div class="flex justify-between"><span class="text-zinc-500">Fungsi Teknis:</span><span class="font-medium text-emerald-700">${p.conditionDetails.function}</span></div>
-              <div class="flex justify-between"><span class="text-zinc-500">Kelengkapan:</span><span class="font-medium text-zinc-800">${p.conditionDetails.completeness}</span></div>
-              <div class="flex justify-between"><span class="text-zinc-500">Catatan Minus:</span><span class="font-medium text-amber-700 bg-amber-50 px-1 rounded">${p.conditionDetails.defect}</span></div>
-              <div class="flex justify-between"><span class="text-zinc-500">Asal Barang:</span><span class="italic text-zinc-600">${p.conditionDetails.origin}</span></div>
+            <div class="space-y-1 text-zinc-600 text-[11px]">
+              <div><span class="font-semibold text-zinc-800">Kondisi Fisik:</span> ${p.conditionDetails.physical}</div>
+              <div><span class="font-semibold text-zinc-800">Fungsi / Kelayakan:</span> ${p.conditionDetails.function}</div>
+              <div><span class="font-semibold text-zinc-800">Kelengkapan:</span> ${p.conditionDetails.completeness}</div>
+              <div><span class="font-semibold text-zinc-800">Asal Konsinyasi:</span> ${p.conditionDetails.origin}</div>
             </div>
           </div>
         </div>
 
-        <!-- Action Buttons -->
+        <!-- Buttons -->
         <div>
           ${isSold ? `
-            <div class="p-3 bg-red-50 border border-red-200 text-center rounded text-xs font-bold text-red-700">
-              Barang ini sudah terjual ke pembeli lain.
+            <div class="p-3 bg-red-50 border border-red-200 text-center rounded-xl text-xs font-bold text-red-700">
+              Produk ini sedang kosong atau sudah terjual.
             </div>
           ` : `
             <div class="grid grid-cols-2 gap-3">
-              <button onclick="addToCart('${p.id}'); closeProductModal();" class="py-3 px-4 border border-black font-bold text-xs uppercase tracking-wider hover:bg-zinc-50 transition rounded flex items-center justify-center gap-1.5">
+              <button onclick="addToCart('${p.id}'); closeProductModal();" class="py-3 px-4 border border-[#14453D] text-[#14453D] font-bold text-xs uppercase tracking-wider hover:bg-emerald-50 transition rounded-xl flex items-center justify-center gap-1.5">
                 <i data-lucide="shopping-bag" class="w-4 h-4"></i>
-                + Kantong Belanja
+                + Keranjang
               </button>
-              <button onclick="buyNowSingle('${p.id}')" class="py-3 px-4 bg-black text-white font-bold text-xs uppercase tracking-wider hover:bg-zinc-800 transition rounded flex items-center justify-center gap-1.5 shadow-sm">
+              <button onclick="buyNowSingle('${p.id}')" class="py-3 px-4 bg-[#F36926] hover:bg-[#E05615] text-white font-bold text-xs uppercase tracking-wider transition rounded-xl flex items-center justify-center gap-1.5 shadow-sm">
                 Beli Sekarang
               </button>
             </div>
-            <p class="text-center text-[10px] text-zinc-400 mt-2">Garansi uang kembali 100% jika kondisi tidak sesuai laporan transparansi di atas.</p>
           `}
         </div>
 
@@ -612,7 +462,7 @@ function buyNowSingle(productId) {
 // Checkout Modal
 function openCheckoutModal() {
   if (state.cart.length === 0) {
-    showToast('Kantong belanja Anda masih kosong.');
+    showToast('Keranjang belanja Anda masih kosong.');
     return;
   }
   closeCartDrawer();
@@ -625,7 +475,7 @@ function closeCheckoutModal() {
   document.body.classList.remove('overflow-hidden');
 }
 
-// Buyer Checkout Form Submission (TRIGGERS REALTIME ADMIN POPUP!)
+// Buyer Checkout (Memicu Notifikasi Real-time di Admin CMS!)
 function handleBuyerCheckout(e) {
   e.preventDefault();
 
@@ -637,14 +487,13 @@ function handleBuyerCheckout(e) {
 
   let subtotal = 0;
   const items = state.cart.map(item => {
-    subtotal += item.price;
+    const itemTotal = item.price * (item.qty || 1);
+    subtotal += itemTotal;
     return {
       id: item.id,
       name: item.name,
-      brand: item.brand,
       price: item.price,
-      grade: item.grade,
-      size: item.size
+      qty: item.qty || 1
     };
   });
 
@@ -662,13 +511,13 @@ function handleBuyerCheckout(e) {
   // 2. Format WhatsApp pesan ke admin
   let waItems = '';
   items.forEach((it, idx) => {
-    waItems += `${idx + 1}. ${it.name} (${it.grade}) - ${formatRupiah(it.price)}%0A`;
+    waItems += `${idx + 1}. ${it.name} (${it.qty}x) - ${formatRupiah(it.price * it.qty)}%0A`;
   });
 
   const waNumber = "6281234567890";
-  let message = `*PESANAN BARU TITIPJUALSECOND*%0A`;
+  let message = `*PESANAN TITIPLAKU*%0A`;
   message += `Invoice: *#${order.orderId}*%0A%0A`;
-  message += `*Daftar Barang:*%0A${waItems}%0A`;
+  message += `*Daftar Pesanan:*%0A${waItems}%0A`;
   message += `*Total Pembayaran:* ${formatRupiah(subtotal)}%0A%0A`;
   message += `*Data Pengiriman:*%0A`;
   message += `• Nama: ${encodeURIComponent(name)}%0A`;
@@ -676,9 +525,8 @@ function handleBuyerCheckout(e) {
   message += `• Alamat: ${encodeURIComponent(address)}%0A`;
   message += `• Ekspedisi: ${encodeURIComponent(courier)}%0A`;
   if (notes) message += `• Catatan: ${encodeURIComponent(notes)}%0A`;
-  message += `%0AMohon konfirmasi rekening transfer untuk pembayaran pesanan ini. Terima kasih!`;
+  message += `%0AMohon info nomor rekening pembayaran dan konfirmasi stok. Terima kasih!`;
 
-  // 3. Reset Cart
   state.cart = [];
   saveCart();
   closeCheckoutModal();
@@ -687,7 +535,40 @@ function handleBuyerCheckout(e) {
   window.open(`https://wa.me/${waNumber}?text=${message}`, '_blank');
 }
 
-// Security: Admin Auth Modal Gate
+// Titip Jual (Konsinyasi) Modal
+function openConsignmentModal() {
+  document.getElementById('consignmentModal').classList.remove('hidden');
+  document.body.classList.add('overflow-hidden');
+}
+
+function closeConsignmentModal() {
+  document.getElementById('consignmentModal').classList.add('hidden');
+  document.body.classList.remove('overflow-hidden');
+}
+
+function handleConsignmentSubmit(e) {
+  e.preventDefault();
+  const name = document.getElementById('consignName').value;
+  const category = document.getElementById('consignCat').value;
+  const price = document.getElementById('consignPrice').value;
+  const origin = document.getElementById('consignOrigin').value;
+  const desc = document.getElementById('consignDesc').value;
+
+  const waNumber = "6281234567890";
+  let message = `*PENGAJUAN TITIP JUAL / KONSINYASI TITIPLAKU*%0A%0A`;
+  message += `• Nama Produk/Barang: ${encodeURIComponent(name)}%0A`;
+  message += `• Kategori: ${encodeURIComponent(category)}%0A`;
+  message += `• Ekspektasi Harga: Rp ${encodeURIComponent(price)}%0A`;
+  message += `• Lokasi/Asal UMKM: ${encodeURIComponent(origin)}%0A`;
+  message += `• Keterangan & Deskripsi: ${encodeURIComponent(desc)}%0A%0A`;
+  message += `Halo Admin TitipLaku, saya ingin menitipkan produk di atas. Foto produk akan saya kirimkan di chat ini.`;
+
+  closeConsignmentModal();
+  showToast('Form terkirim! Silakan kirimkan foto produk via WhatsApp.');
+  window.open(`https://wa.me/${waNumber}?text=${message}`, '_blank');
+}
+
+// Admin Security Gate
 function openAuthModal() {
   document.getElementById('adminPinInput').value = '';
   document.getElementById('authModal').classList.remove('hidden');
@@ -709,26 +590,16 @@ function handleAdminLogin(e) {
     showToast('Login Admin Berhasil! Mengalihkan ke CMS...');
     setTimeout(() => {
       window.location.href = 'admin.html';
-    }, 600);
+    }, 500);
   } else {
-    alert('Password / PIN Admin salah! Akses ditolak.');
+    alert('Password Admin Salah! Akses ditolak.');
     document.getElementById('adminPinInput').value = '';
     document.getElementById('adminPinInput').focus();
   }
 }
 
-// Event Listeners Init
-function initStorefrontEvents() {
-  // Brand search input
-  const brandSearch = document.getElementById('brandSearchInput');
-  if (brandSearch) {
-    brandSearch.addEventListener('input', (e) => {
-      state.brandQuery = e.target.value;
-      renderBrandList();
-    });
-  }
-
-  // Header search input on Enter
+// Event Listeners
+function initEvents() {
   const searchInput = document.getElementById('searchInput');
   if (searchInput) {
     searchInput.addEventListener('keyup', (e) => {
@@ -739,25 +610,23 @@ function initStorefrontEvents() {
     });
   }
 
-  // Escape key closes modals
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       closeProductModal();
       closeCartDrawer();
       closeCheckoutModal();
+      closeConsignmentModal();
       closeAuthModal();
     }
   });
 
-  // Listen to product updates from Admin CMS
-  window.addEventListener('titipjualsecond:updated', () => {
+  window.addEventListener('titiplaku:updated', () => {
     state.products = Store.getAll();
-    renderBrandList();
     applyFilters();
   });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   loadStorefront();
-  initStorefrontEvents();
+  initEvents();
 });
